@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pamoja — Community Loans</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   :root{
@@ -14,850 +14,1425 @@
     --amb:#D4821A;--ambl:#F5A940;--ambp:#FFF4E0;
     --white:#FFFFFF;--err:#B91C1C;--errp:#FEF2F2;
     --txt:#1A3A2A;--txt2:#4A6A5A;--txt3:#8AA898;
-    --shadow: 0 10px 30px rgba(26,58,42,0.1);
-    --shadow-sm: 0 4px 12px rgba(26,58,42,0.08);
   }
-  html,body{height:100%;background:linear-gradient(135deg, var(--sand) 0%, #f9f3eb 100%);font-family:'Inter',sans-serif;color:var(--txt);font-size:15px}
+  html,body{height:100%;background:var(--sand);font-family:'Inter',sans-serif;color:var(--txt);font-size:15px}
   button{font-family:'Inter',sans-serif;cursor:pointer;border:none;outline:none}
   input{font-family:'Inter',sans-serif;outline:none}
-  input::placeholder{color:var(--txt3)}
   .serif{font-family:'Playfair Display',serif}
 
   /* ── SCREENS ── */
-  .screen{display:none;flex-direction:column;min-height:100vh;max-width:420px;margin:0 auto;animation:fadeIn .4s ease}
+  .screen{display:none;flex-direction:column;min-height:100vh;max-width:420px;margin:0 auto}
   .screen.active{display:flex}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
   /* ── AUTH ── */
   .auth-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 24px 48px}
-  .auth-logo{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--gd);text-align:center;margin-bottom:8px;background:linear-gradient(135deg, var(--gd), var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .auth-sub{text-align:center;font-size:14px;color:var(--txt2);margin-bottom:40px;line-height:1.5}
-  .auth-tabs{display:flex;background:var(--white);border-radius:14px;padding:4px;margin-bottom:32px;gap:4px;box-shadow:var(--shadow-sm)}
-  .auth-tab{flex:1;padding:11px;border-radius:11px;font-size:14px;font-weight:500;background:none;border:none;color:var(--txt2);transition:all .2s;position:relative}
-  .auth-tab.active{background:linear-gradient(135deg, var(--gd), var(--gm));color:var(--white);box-shadow:0 4px 12px rgba(74,140,99,0.2)}
-  .field-group{margin-bottom:18px}
-  .field-label{font-size:13px;font-weight:600;color:var(--txt);margin-bottom:8px;display:block;letter-spacing:.02em}
-  .field-input{width:100%;padding:14px 16px;border:1.5px solid var(--sand2);border-radius:12px;font-size:15px;color:var(--txt);background:var(--white);transition:all .2s;box-shadow:0 2px 4px rgba(0,0,0,0.02)}
-  .field-input:focus{border-color:var(--gl);box-shadow:0 0 0 3px rgba(74,140,99,0.1);background:var(--white)}
-  .field-input.err{border-color:var(--err);background:var(--errp)}
-  .field-hint{font-size:12px;color:var(--txt3);margin-top:6px}
-  .avatar-pick{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-  .avatar-circle{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg, var(--gp), #d4ede5);border:2px dashed var(--gl);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex-shrink:0;transition:all .2s;box-shadow:var(--shadow-sm)}
-  .avatar-circle:active{transform:scale(0.98);box-shadow:0 2px 8px rgba(74,140,99,0.15)}
+  .auth-logo{font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--gd);text-align:center;margin-bottom:6px}
+  .auth-sub{text-align:center;font-size:13px;color:var(--txt3);margin-bottom:40px}
+  .auth-tabs{display:flex;background:var(--sand2);border-radius:12px;padding:4px;margin-bottom:28px;gap:4px}
+  .auth-tab{flex:1;padding:9px;border-radius:9px;font-size:13px;font-weight:500;background:none;border:none;color:var(--txt2);transition:all .15s}
+  .auth-tab.active{background:var(--white);color:var(--gd)}
+  .field-group{margin-bottom:14px}
+  .field-label{font-size:12px;font-weight:500;color:var(--txt2);margin-bottom:6px;display:block;letter-spacing:.03em}
+  .field-input{width:100%;padding:13px 14px;border:1.5px solid var(--sand2);border-radius:12px;font-size:15px;color:var(--txt);background:var(--white);transition:border-color .15s}
+  .field-input:focus{border-color:var(--gl)}
+  .field-input.err{border-color:var(--err)}
+  .field-hint{font-size:11px;color:var(--txt3);margin-top:4px}
+  .avatar-pick{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .avatar-circle{width:60px;height:60px;border-radius:50%;background:var(--gp);border:2px dashed var(--gl);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex-shrink:0}
   .avatar-circle img{width:100%;height:100%;object-fit:cover}
-  .avatar-circle span{font-size:24px;color:var(--gl);font-weight:600}
-  .avatar-hint{font-size:13px;color:var(--txt);font-weight:500}
-  .avatar-hint small{display:block;font-size:12px;color:var(--txt3);margin-top:4px;font-weight:400}
-  .pin-row{display:flex;gap:12px;justify-content:center;margin:12px 0}
-  .pin-dot{width:50px;height:58px;border:2px solid var(--sand2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;color:var(--gd);background:var(--white);transition:all .15s;box-shadow:var(--shadow-sm)}
-  .pin-dot.filled{border-color:var(--gl);background:linear-gradient(135deg, var(--gp), #d4ede5);color:var(--gd)}
+  .avatar-circle span{font-size:22px;color:var(--gl)}
+  .avatar-hint{font-size:13px;color:var(--txt2)}
+  .avatar-hint small{display:block;font-size:11px;color:var(--txt3);margin-top:2px}
+  .pin-row{display:flex;gap:12px;justify-content:center;margin:8px 0}
+  .pin-dot{width:48px;height:56px;border:1.5px solid var(--sand2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:500;color:var(--gd);background:var(--white);transition:all .15s}
+  .pin-dot.filled{border-color:var(--gl);background:var(--gp)}
   .pin-dot.err{border-color:var(--err);background:var(--errp)}
-  .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0 0}
-  .num-btn{padding:16px;border-radius:14px;background:var(--white);border:1.5px solid var(--sand2);font-size:20px;font-weight:600;color:var(--gd);transition:all .1s;box-shadow:var(--shadow-sm)}
-  .num-btn:active{background:var(--gp);border-color:var(--gl);transform:scale(.94);box-shadow:0 2px 8px rgba(74,140,99,0.15)}
-  .num-btn.del{font-size:18px;color:var(--txt2)}
-  .num-btn.empty{background:transparent;border-color:transparent;pointer-events:none;box-shadow:none}
-  .btn-main{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg, var(--gd), var(--gm));color:var(--white);font-size:16px;font-weight:600;margin-top:24px;transition:all .2s;box-shadow:0 6px 20px rgba(74,140,99,0.2);letter-spacing:.02em}
-  .btn-main:active{transform:scale(.98);box-shadow:0 3px 10px rgba(74,140,99,0.15)}
-  .btn-main:disabled{opacity:.4;cursor:not-allowed;transform:none}
-  .err-msg{font-size:13px;color:var(--err);text-align:center;margin-top:10px;min-height:20px;font-weight:500}
+  .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 0}
+  .num-btn{padding:16px;border-radius:14px;background:var(--white);border:1.5px solid var(--sand2);font-size:20px;font-weight:500;color:var(--gd);transition:all .1s}
+  .num-btn:active{background:var(--gp);border-color:var(--gl);transform:scale(.96)}
+  .num-btn.del{font-size:16px;color:var(--txt2)}
+  .num-btn.empty{background:transparent;border-color:transparent;pointer-events:none}
+  .btn-main{width:100%;padding:15px;border-radius:14px;background:var(--gd);color:var(--white);font-size:15px;font-weight:500;margin-top:20px;transition:opacity .15s}
+  .btn-main:active{opacity:.85}
+  .btn-main:disabled{opacity:.4;cursor:not-allowed}
+  .err-msg{font-size:12px;color:var(--err);text-align:center;margin-top:8px;min-height:18px}
 
   /* ── TOP BAR ── */
-  .topbar{display:flex;align-items:center;justify-content:space-between;padding:60px 20px 20px;background:transparent}
-  .topbar-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gd)}
-  .topbar-back{width:40px;height:40px;border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--gd);transition:all .2s;box-shadow:var(--shadow-sm)}
-  .topbar-back:active{background:var(--gp);transform:scale(.95)}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:52px 20px 16px;background:var(--sand)}
+  .topbar-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--gd)}
+  .topbar-back{width:38px;height:38px;border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--gd)}
+  .topbar-back:active{background:var(--gp)}
 
   /* ── HOME ── */
-  .balance-card{margin:16px 16px 24px;background:linear-gradient(135deg, #1A3A2A 0%, #2D5A3D 100%);border-radius:20px;padding:28px 24px;position:relative;overflow:hidden;box-shadow:0 12px 32px rgba(26,58,42,0.25)}
-  .balance-card::before{content:'';position:absolute;top:-60px;right:-60px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.08);animation:float 6s ease-in-out infinite}
-  .balance-card::after{content:'';position:absolute;bottom:-30px;left:20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.05)}
-  @keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}
-  .bal-label{font-size:12px;color:rgba(255,255,255,.65);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;position:relative;z-index:1}
-  .bal-amount{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:var(--white);line-height:1.1;position:relative;z-index:1;text-shadow:0 2px 4px rgba(0,0,0,0.1)}
-  .bal-sub{font-size:13px;color:rgba(255,255,255,.6);margin-top:6px;position:relative;z-index:1}
-  .bal-chips{display:flex;gap:10px;margin-top:18px;position:relative;z-index:1;flex-wrap:wrap}
-  .bal-chip{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;backdrop-filter:blur(10px)}
-  .chip-owe{background:rgba(213,130,26,.2);color:#FAC775;border:1px solid rgba(213,130,26,.3)}
-  .chip-owed{background:rgba(255,255,255,.15);color:#9FE1CB;border:1px solid rgba(255,255,255,.2)}
+  .balance-card{margin:0 16px 16px;background:var(--gd);border-radius:20px;padding:22px 22px 18px;position:relative;overflow:hidden}
+  .balance-card::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .balance-card::after{content:'';position:absolute;bottom:-20px;left:30px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.04)}
+  .bal-label{font-size:11px;color:rgba(255,255,255,.55);font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;position:relative;z-index:1}
+  .bal-amount{font-family:'Playfair Display',serif;font-size:38px;font-weight:600;color:var(--white);line-height:1.1;position:relative;z-index:1}
+  .bal-sub{font-size:12px;color:rgba(255,255,255,.5);margin-top:4px;position:relative;z-index:1}
+  .bal-chips{display:flex;gap:8px;margin-top:16px;position:relative;z-index:1}
+  .bal-chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500}
+  .chip-owe{background:rgba(213,130,26,.25);color:#FAC775}
+  .chip-owed{background:rgba(74,140,99,.25);color:#9FE1CB}
 
-  .quick-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 16px 24px}
-  .quick-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:var(--white);border-radius:18px;padding:18px 10px;border:none;transition:all .2s;box-shadow:var(--shadow-sm)}
-  .quick-btn:active{transform:scale(.96);background:#f9f7f4}
-  .q-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;transition:all .2s}
-  .qi-green{background:linear-gradient(135deg, var(--gp), #d4ede5);color:var(--gd)}
-  .qi-amber{background:linear-gradient(135deg, var(--ambp), #ffd699);color:var(--amb)}
-  .qi-blue{background:linear-gradient(135deg, #E8F0FF, #cfe0ff);color:#185FA5}
-  .q-label{font-size:12px;font-weight:600;color:var(--txt);text-align:center}
+  .quick-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 16px 20px}
+  .quick-btn{display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--white);border-radius:16px;padding:16px 8px;border:none}
+  .quick-btn:active{background:var(--gp)}
+  .q-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+  .qi-green{background:var(--gp);color:var(--gd)}
+  .qi-amber{background:var(--ambp);color:var(--amb)}
+  .qi-blue{background:#E8F0FF;color:#185FA5}
+  .q-label{font-size:11px;font-weight:500;color:var(--txt);text-align:center}
 
-  .section-bar{display:flex;justify-content:space-between;align-items:center;padding:0 20px;margin-bottom:14px}
-  .section-title{font-size:14px;font-weight:600;color:var(--txt);letter-spacing:.02em}
-  .section-link{font-size:13px;color:var(--gl);font-weight:600;background:none;border:none;transition:all .2s}
-  .section-link:active{opacity:.7}
+  .section-bar{display:flex;justify-content:space-between;align-items:center;padding:0 20px;margin-bottom:12px}
+  .section-title{font-size:13px;font-weight:500;color:var(--txt2);letter-spacing:.03em}
+  .section-link{font-size:12px;color:var(--gl);font-weight:500;background:none;border:none}
 
   /* ── PERSON CARDS ── */
-  .person-list{padding:0 16px 20px}
-  .person-card{background:var(--white);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;transition:all .2s;box-shadow:var(--shadow-sm)}
-  .person-card:active{background:var(--gp);transform:translateX(2px)}
-  .p-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:16px;flex-shrink:0;overflow:hidden;box-shadow:0 2px 8px rgba(74,140,99,0.15)}
+  .person-list{padding:0 16px}
+  .person-card{background:var(--white);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px}
+  .person-card:active{background:var(--gp)}
+  .p-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:16px;flex-shrink:0;overflow:hidden}
   .p-avatar img{width:100%;height:100%;object-fit:cover}
   .p-info{flex:1;min-width:0}
-  .p-name{font-size:15px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .p-sub{font-size:12px;color:var(--txt3);margin-top:3px;font-weight:500}
+  .p-name{font-size:14px;font-weight:500;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .p-sub{font-size:12px;color:var(--txt3);margin-top:1px}
   .p-right{text-align:right;flex-shrink:0}
-  .p-amount{font-size:16px;font-weight:700}
+  .p-amount{font-size:15px;font-weight:500}
   .amount-red{color:#B91C1C}
   .amount-green{color:var(--gl)}
-  .p-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;margin-top:4px}
+  .p-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:500;margin-top:3px}
   .badge-owe{background:var(--errp);color:#991B1B}
   .badge-owed{background:var(--gp);color:#27500A}
-  .empty-state{text-align:center;padding:60px 20px;color:var(--txt3);font-size:14px}
-  .empty-state .empty-icon{font-size:48px;margin-bottom:16px;opacity:.6}
+  .empty-state{text-align:center;padding:40px 20px;color:var(--txt3);font-size:13px}
+  .empty-state .empty-icon{font-size:40px;margin-bottom:12px}
 
   /* ── PAY SCREEN ── */
   .pay-wrap{flex:1;padding:0 20px 40px}
-  .token-box{background:var(--white);border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
+  .token-box{background:var(--white);border-radius:16px;padding:20px;margin-bottom:16px}
   .token-input-row{display:flex;gap:10px;align-items:center}
-  .token-input{flex:1;padding:14px 16px;border:2px solid var(--sand2);border-radius:12px;font-size:16px;letter-spacing:.1em;font-weight:600;color:var(--gd);background:linear-gradient(135deg, var(--gp), #f0fbf7);transition:all .2s;font-family:'Courier New',monospace}
-  .token-input:focus{border-color:var(--gl);box-shadow:0 0 0 3px rgba(74,140,99,0.1)}
-  .scan-btn{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg, var(--gd), var(--gm));color:var(--white);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;transition:all .2s;box-shadow:var(--shadow-sm)}
-  .scan-btn:active{transform:scale(.94)}
-  .resolved-person{display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(135deg, var(--gp), #d4ede5);border-radius:14px;margin-top:14px;border:1px solid rgba(74,140,99,0.2)}
+  .token-input{flex:1;padding:13px 14px;border:1.5px solid var(--sand2);border-radius:12px;font-size:16px;letter-spacing:.15em;font-weight:500;color:var(--gd);background:var(--gp)}
+  .token-input:focus{border-color:var(--gl)}
+  .scan-btn{width:48px;height:48px;border-radius:12px;background:var(--gd);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+  .resolved-person{display:flex;align-items:center;gap:12px;padding:14px;background:var(--gp);border-radius:12px;margin-top:12px}
   .resolved-person.hidden{display:none}
-  .amount-big{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--gd);text-align:center;padding:24px 0 10px}
-  .amount-big-wrap{background:var(--white);border-radius:16px;padding:10px 20px 18px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
-  .currency-label{text-align:center;font-size:12px;color:var(--txt3);margin-bottom:6px;font-weight:600}
+  .amount-big{font-family:'Playfair Display',serif;font-size:44px;font-weight:600;color:var(--gd);text-align:center;padding:20px 0 8px}
+  .amount-big-wrap{background:var(--white);border-radius:16px;padding:8px 20px 16px;margin-bottom:16px}
+  .currency-label{text-align:center;font-size:12px;color:var(--txt3);margin-bottom:4px}
   .amount-numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 4px}
-  .an-btn{padding:14px;border-radius:12px;background:var(--white);border:1.5px solid var(--sand2);font-size:18px;font-weight:600;color:var(--gd);transition:all .1s;box-shadow:var(--shadow-sm)}
-  .an-btn:active{background:var(--gp);border-color:var(--gl);transform:scale(.94)}
-  .an-btn.del{font-size:16px;color:var(--txt2)}
-  .pay-note{width:100%;padding:14px 16px;border:1.5px solid var(--sand2);border-radius:12px;font-size:14px;color:var(--txt);background:var(--white);resize:none;margin-bottom:18px;transition:all .2s;box-shadow:var(--shadow-sm)}
-  .pay-note:focus{border-color:var(--gl);box-shadow:0 0 0 3px rgba(74,140,99,0.1)}
+  .an-btn{padding:14px;border-radius:12px;background:var(--gp);border:none;font-size:18px;font-weight:500;color:var(--gd);transition:all .1s}
+  .an-btn:active{background:var(--sand2);transform:scale(.96)}
+  .an-btn.del{font-size:15px;color:var(--txt2)}
+  .pay-note{width:100%;padding:13px 14px;border:1.5px solid var(--sand2);border-radius:12px;font-size:14px;color:var(--txt);background:var(--white);resize:none;margin-bottom:16px}
+  .pay-note:focus{border-color:var(--gl)}
 
   /* ── REQUEST ── */
   .req-wrap{flex:1;padding:0 20px 40px}
 
   /* ── MY TOKEN ── */
-  .token-display-card{margin:20px 16px;background:linear-gradient(135deg, #1A3A2A 0%, #2D5A3D 100%);border-radius:24px;padding:36px 28px;text-align:center;box-shadow:0 12px 32px rgba(26,58,42,0.25);position:relative;overflow:hidden}
-  .token-display-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
-  .token-display-card::after{content:'';position:absolute;bottom:-30px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.04)}
-  .token-code{font-family:'Courier New',monospace;font-size:38px;font-weight:700;color:var(--white);letter-spacing:.3em;margin:16px 0;position:relative;z-index:1;text-shadow:0 2px 4px rgba(0,0,0,0.2);word-break:break-all}
-  .token-lbl{font-size:12px;color:rgba(255,255,255,.7);letter-spacing:.1em;text-transform:uppercase;font-weight:600;position:relative;z-index:1}
-  .token-hint{font-size:13px;color:rgba(255,255,255,.7);margin-top:12px;line-height:1.6;position:relative;z-index:1}
-  .copy-btn{display:inline-flex;align-items:center;gap:7px;margin-top:18px;padding:11px 22px;border-radius:20px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.95);font-size:14px;font-weight:600;border:1px solid rgba(255,255,255,.2);transition:all .2s;backdrop-filter:blur(10px)}
-  .copy-btn:active{background:rgba(255,255,255,.25);transform:scale(.96)}
-  .qr-placeholder{width:180px;height:180px;background:var(--white);border-radius:16px;margin:24px auto 0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--txt2);font-size:13px;box-shadow:0 8px 24px rgba(26,58,42,0.15)}
+  .token-display-card{margin:0 16px;background:var(--gd);border-radius:20px;padding:28px 24px;text-align:center}
+  .token-code{font-family:'Playfair Display',serif;font-size:42px;font-weight:600;color:var(--white);letter-spacing:.2em;margin:12px 0}
+  .token-lbl{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase}
+  .token-hint{font-size:12px;color:rgba(255,255,255,.6);margin-top:8px;line-height:1.5}
+  .copy-btn{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 20px;border-radius:20px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);font-size:13px;font-weight:500;border:none}
+  .copy-btn:active{background:rgba(255,255,255,.2)}
+  .qr-placeholder{width:160px;height:160px;background:var(--white);border-radius:16px;margin:20px auto 0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--txt2);font-size:12px}
   .qr-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:12px}
   .qr-cell{width:100%;aspect-ratio:1;border-radius:2px}
 
   /* ── HISTORY ── */
-  .tx-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--sand2)}
-  .tx-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;flex-shrink:0;box-shadow:var(--shadow-sm)}
+  .tx-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:.5px solid var(--sand2)}
+  .tx-item:last-child{border-bottom:none}
+  .tx-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .txi-out{background:var(--errp);color:#B91C1C}
+  .txi-in{background:var(--gp);color:var(--gl)}
   .tx-body{flex:1;min-width:0}
-  .tx-name{font-size:14px;font-weight:600;color:var(--txt)}
-  .tx-note{font-size:12px;color:var(--txt3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tx-name{font-size:13px;font-weight:500;color:var(--txt)}
+  .tx-note{font-size:11px;color:var(--txt3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .tx-right{text-align:right;flex-shrink:0}
-  .tx-amount{font-size:15px;font-weight:700}
-  .tx-date{font-size:11px;color:var(--txt3);margin-top:2px;font-weight:500}
-  .color-red{color:#B91C1C}
-  .color-green{color:var(--gl)}
+  .tx-amount{font-size:14px;font-weight:500}
+  .tx-date{font-size:11px;color:var(--txt3);margin-top:1px}
 
-  /* ── MODALS ── */
-  .modal-backdrop{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(26,58,42,0.4);backdrop-filter:blur(4px);align-items:center;justify-content:center;z-index:100;animation:fadeIn .3s ease}
+  /* ── PROFILE ── */
+  .profile-hero{display:flex;flex-direction:column;align-items:center;padding:24px 20px 20px}
+  .profile-avatar{width:80px;height:80px;border-radius:50%;background:var(--gp);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:28px;font-weight:600;color:var(--gd);overflow:hidden;cursor:pointer;margin-bottom:12px}
+  .profile-avatar img{width:100%;height:100%;object-fit:cover}
+  .profile-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--gd)}
+  .profile-phone{font-size:13px;color:var(--txt3);margin-top:3px}
+  .profile-token{font-size:12px;color:var(--gl);font-weight:500;margin-top:6px;background:var(--gp);padding:4px 14px;border-radius:20px}
+  .menu-card{background:var(--white);border-radius:16px;overflow:hidden;margin:0 16px 14px}
+  .menu-row{display:flex;align-items:center;gap:14px;padding:15px 18px;border-bottom:.5px solid var(--sand2);cursor:pointer}
+  .menu-row:last-child{border-bottom:none}
+  .menu-row:active{background:var(--gp)}
+  .menu-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .mi-green{background:var(--gp);color:var(--gd)}
+  .mi-amber{background:var(--ambp);color:var(--amb)}
+  .mi-red{background:var(--errp);color:#B91C1C}
+  .menu-label{flex:1;font-size:14px;color:var(--txt)}
+  .menu-arrow{font-size:14px;color:var(--txt3)}
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav{background:var(--white);border-top:.5px solid var(--sand2);display:flex;padding:10px 0 22px;position:sticky;bottom:0}
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--txt3);padding:4px 0}
+  .nav-item.active{color:var(--gd)}
+  .nav-icon{font-size:22px}
+  .nav-label{font-size:10px;font-weight:500}
+  .nav-dot{width:4px;height:4px;border-radius:50%;background:var(--gl);opacity:0}
+  .nav-item.active .nav-dot{opacity:1}
+
+  /* ── MODAL ── */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:flex-end;justify-content:center}
   .modal-backdrop.active{display:flex}
-  .modal-card{background:var(--white);border-radius:24px;padding:28px;max-width:90%;box-shadow:0 20px 60px rgba(26,58,42,0.3);animation:slideUp .4s ease}
-  .modal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gd);margin-bottom:20px;text-align:center}
-  .modal-content{margin-bottom:24px}
+  .modal-sheet{background:var(--sand);border-radius:24px 24px 0 0;padding:12px 0 40px;width:100%;max-width:420px;animation:slideUp .25s ease}
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .modal-handle{width:36px;height:4px;background:var(--sand2);border-radius:2px;margin:0 auto 20px}
+  .modal-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--gd);padding:0 22px;margin-bottom:16px}
+  .modal-body{padding:0 22px}
+
+  /* ── SUCCESS ── */
+  .success-anim{display:flex;flex-direction:column;align-items:center;padding:32px 24px 16px;text-align:center}
+  .success-circle{width:72px;height:72px;border-radius:50%;background:var(--gd);display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--white);margin-bottom:20px}
+  .success-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--gd);margin-bottom:8px}
+  .success-sub{font-size:14px;color:var(--txt2);line-height:1.6}
 
   /* ── TOAST ── */
-  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--gd);color:var(--white);padding:14px 24px;border-radius:20px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(26,58,42,0.3);animation:slideUp .3s ease,fadeOut .3s ease .3s forwards;z-index:1000}
-  @keyframes fadeOut{0%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(20px)}}
+  .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gd);color:var(--white);padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:200}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  /* ── RESPONSIVE ── */
-  @media (max-width:480px){
-    .screen{max-width:100%}
-    .auth-logo{font-size:32px}
-    .bal-amount{font-size:36px}
-    .amount-big{font-size:42px}
-    .token-code{font-size:32px}
-  }
+  /* ── UTILS ── */
+  .hidden{display:none!important}
+  .divider{height:.5px;background:var(--sand2);margin:12px 0}
+  .color-red{color:#B91C1C}
+  .color-green{color:var(--gl)}
+  .mt8{margin-top:8px}
+  .mt16{margin-top:16px}
+  .px16{padding:0 16px}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════
-     SIGNUP SCREEN
-     ══════════════════════════ -->
-<div id="screen-signup" class="screen active">
+<!-- ═══════════════════════════════════════ -->
+<!--  SCREEN: SIGN UP                        -->
+<!-- ═══════════════════════════════════════ -->
+<div class="screen active" id="screen-signup">
   <div class="auth-wrap">
     <div class="auth-logo">Pamoja</div>
-    <div class="auth-sub">Community loans, simplified. Own your token, build trust.</div>
+    <div class="auth-sub">Community loans, built on trust</div>
+
     <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Log In</button>
-      <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
-    </div>
-    
-    <!-- LOGIN TAB -->
-    <div id="login-tab" style="display:flex;flex-direction:column">
-      <div class="field-group">
-        <label class="field-label">Your ID</label>
-        <input id="login-id" class="field-input" placeholder="e.g., 12345" autocomplete="off">
-      </div>
-      <div class="field-group">
-        <label class="field-label">PIN (4 digits)</label>
-        <div class="pin-row"><div id="login-pin-0" class="pin-dot"></div><div id="login-pin-1" class="pin-dot"></div><div id="login-pin-2" class="pin-dot"></div><div id="login-pin-3" class="pin-dot"></div></div>
-        <div class="numpad" id="login-numpad"></div>
-      </div>
-      <div class="err-msg" id="login-err"></div>
-      <button class="btn-main" onclick="doLogin()">Enter App</button>
+      <button class="auth-tab active" id="tab-signup" onclick="switchTab('signup')">Create account</button>
+      <button class="auth-tab" id="tab-login" onclick="switchTab('login')">Sign in</button>
     </div>
 
-    <!-- SIGNUP TAB -->
-    <div id="signup-tab" style="display:none;flex-direction:column">
+    <!-- SIGN UP FORM -->
+    <div id="form-signup">
       <div class="avatar-pick">
-        <div id="signup-avatar" class="avatar-circle" onclick="pickAvatar()"><span>👤</span></div>
-        <div class="avatar-hint">Tap to add photo<small>JPG or PNG (optional)</small></div>
+        <div class="avatar-circle" onclick="document.getElementById('avatar-file').click()">
+          <img id="signup-avatar-preview" src="" style="display:none">
+          <span id="signup-avatar-icon">+</span>
+        </div>
+        <div class="avatar-hint">
+          Add a photo
+          <small>Optional — helps others recognise you</small>
+        </div>
+        <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="previewAvatar(this)">
       </div>
-      <input type="file" id="avatar-input" style="display:none" accept="image/*" onchange="loadAvatar(this.files[0])">
+
       <div class="field-group">
         <label class="field-label">Username</label>
-        <input id="signup-username" class="field-input" placeholder="e.g., Alice" autocomplete="off">
+        <input class="field-input" type="text" id="signup-username" placeholder="e.g. amara_kone" maxlength="20" autocomplete="off">
         <div class="field-hint">Letters, numbers, underscores only</div>
       </div>
+
       <div class="field-group">
-        <label class="field-label">Phone</label>
-        <input id="signup-phone" class="field-input" placeholder="+1 234 567 8900" autocomplete="off">
+        <label class="field-label">Phone number</label>
+        <input class="field-input" type="tel" id="signup-phone" placeholder="+225 07 123 4567" autocomplete="tel">
       </div>
+
       <div class="field-group">
-        <label class="field-label">Create PIN (4 digits)</label>
-        <div class="pin-row"><div id="signup-pin-0" class="pin-dot"></div><div id="signup-pin-1" class="pin-dot"></div><div id="signup-pin-2" class="pin-dot"></div><div id="signup-pin-3" class="pin-dot"></div></div>
-        <div class="numpad" id="signup-numpad"></div>
+        <label class="field-label">Create a 4-digit PIN</label>
+        <div class="pin-row" id="signup-pin-display">
+          <div class="pin-dot" id="sp0">–</div>
+          <div class="pin-dot" id="sp1">–</div>
+          <div class="pin-dot" id="sp2">–</div>
+          <div class="pin-dot" id="sp3">–</div>
+        </div>
+        <div class="numpad" id="signup-numpad">
+          <button class="num-btn" onclick="pinInput('signup',1)">1</button>
+          <button class="num-btn" onclick="pinInput('signup',2)">2</button>
+          <button class="num-btn" onclick="pinInput('signup',3)">3</button>
+          <button class="num-btn" onclick="pinInput('signup',4)">4</button>
+          <button class="num-btn" onclick="pinInput('signup',5)">5</button>
+          <button class="num-btn" onclick="pinInput('signup',6)">6</button>
+          <button class="num-btn" onclick="pinInput('signup',7)">7</button>
+          <button class="num-btn" onclick="pinInput('signup',8)">8</button>
+          <button class="num-btn" onclick="pinInput('signup',9)">9</button>
+          <button class="num-btn empty"></button>
+          <button class="num-btn" onclick="pinInput('signup',0)">0</button>
+          <button class="num-btn del" onclick="pinDelete('signup')">⌫</button>
+        </div>
       </div>
+
       <div class="err-msg" id="signup-err"></div>
-      <button class="btn-main" onclick="doSignup()">Create Account</button>
+      <button class="btn-main" onclick="doSignup()">Create account</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="form-login" class="hidden">
+      <div class="field-group">
+        <label class="field-label">Username or phone number</label>
+        <input class="field-input" type="text" id="login-id" placeholder="username or phone" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Enter your PIN</label>
+        <div class="pin-row" id="login-pin-display">
+          <div class="pin-dot" id="lp0">–</div>
+          <div class="pin-dot" id="lp1">–</div>
+          <div class="pin-dot" id="lp2">–</div>
+          <div class="pin-dot" id="lp3">–</div>
+        </div>
+        <div class="numpad">
+          <button class="num-btn" onclick="pinInput('login',1)">1</button>
+          <button class="num-btn" onclick="pinInput('login',2)">2</button>
+          <button class="num-btn" onclick="pinInput('login',3)">3</button>
+          <button class="num-btn" onclick="pinInput('login',4)">4</button>
+          <button class="num-btn" onclick="pinInput('login',5)">5</button>
+          <button class="num-btn" onclick="pinInput('login',6)">6</button>
+          <button class="num-btn" onclick="pinInput('login',7)">7</button>
+          <button class="num-btn" onclick="pinInput('login',8)">8</button>
+          <button class="num-btn" onclick="pinInput('login',9)">9</button>
+          <button class="num-btn empty"></button>
+          <button class="num-btn" onclick="pinInput('login',0)">0</button>
+          <button class="num-btn del" onclick="pinDelete('login')">⌫</button>
+        </div>
+      </div>
+      <div class="err-msg" id="login-err"></div>
+      <button class="btn-main" onclick="doLogin()">Sign in</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════
-     HOME SCREEN
-     ══════════════════════════ -->
-<div id="screen-home" class="screen">
+<!-- ═══════════════════════════════════════ -->
+<!--  SCREEN: HOME                           -->
+<!-- ═══════════════════════════════════════ -->
+<div class="screen" id="screen-home">
   <div class="topbar">
-    <div class="topbar-title">Pamoja</div>
-    <button class="topbar-back" onclick="goTo('screen-profile')">⚙️</button>
+    <div>
+      <div class="section-title" style="font-size:12px;margin-bottom:2px">Good day,</div>
+      <div class="topbar-title" id="home-greeting">Amara</div>
+    </div>
+    <div class="p-avatar" id="home-avatar" style="width:40px;height:40px;font-size:15px;cursor:pointer" onclick="goTo('screen-profile')"></div>
   </div>
+
   <div class="balance-card">
-    <div class="bal-label">Balance</div>
-    <div class="bal-amount" id="home-balance">KES 0</div>
-    <div class="bal-sub" id="home-net">You owe KES 0</div>
+    <div class="bal-label">Net balance</div>
+    <div class="bal-amount" id="home-net-balance">$0.00</div>
+    <div class="bal-sub" id="home-net-label">All settled up</div>
     <div class="bal-chips">
-      <div class="bal-chip chip-owe"><span id="home-owe-count">0</span> owed to you</div>
-      <div class="bal-chip chip-owed"><span id="home-owed-count">0</span> you owe</div>
+      <div class="bal-chip chip-owe">You owe <span id="home-owe-total">$0</span></div>
+      <div class="bal-chip chip-owed">Owed to you <span id="home-owed-total">$0</span></div>
     </div>
   </div>
+
   <div class="quick-row">
-    <button class="quick-btn" onclick="goTo('screen-pay')"><div class="q-icon qi-green">💳</div><div class="q-label">Pay</div></button>
-    <button class="quick-btn" onclick="goTo('screen-request')"><div class="q-icon qi-amber">📤</div><div class="q-label">Request</div></button>
-    <button class="quick-btn" onclick="goTo('screen-mytoken')"><div class="q-icon qi-blue">🔐</div><div class="q-label">My Token</div></button>
+    <button class="quick-btn" onclick="goTo('screen-pay')">
+      <div class="q-icon qi-green">↑</div>
+      <span class="q-label">Pay someone</span>
+    </button>
+    <button class="quick-btn" onclick="goTo('screen-request')">
+      <div class="q-icon qi-amber">↓</div>
+      <span class="q-label">Request money</span>
+    </button>
+    <button class="quick-btn" onclick="goTo('screen-mytoken')">
+      <div class="q-icon qi-blue">#</div>
+      <span class="q-label">My token</span>
+    </button>
   </div>
+
+  <!-- People who owe me -->
   <div class="section-bar">
-    <div class="section-title">Recent Activity</div>
-    <button class="section-link" onclick="goTo('screen-history')">View All</button>
+    <span class="section-title">Owed to you</span>
   </div>
-  <div id="home-recent" class="person-list"></div>
+  <div class="person-list" id="home-owed-list">
+    <div class="empty-state"><div class="empty-icon">✓</div>No one owes you yet</div>
+  </div>
+
+  <!-- People I owe -->
+  <div class="section-bar" style="margin-top:8px">
+    <span class="section-title">You owe</span>
+  </div>
+  <div class="person-list" id="home-owe-list">
+    <div class="empty-state"><div class="empty-icon">✓</div>You don't owe anyone</div>
+  </div>
+
+  <div style="height:20px"></div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="navTo('home',this)">
+      <div class="nav-icon">⌂</div>
+      <div class="nav-label">Home</div>
+      <div class="nav-dot"></div>
+    </button>
+    <button class="nav-item" onclick="navTo('pay',this)">
+      <div class="nav-icon">↑</div>
+      <div class="nav-label">Pay</div>
+      <div class="nav-dot"></div>
+    </button>
+    <button class="nav-item" onclick="navTo('history',this)">
+      <div class="nav-icon">≡</div>
+      <div class="nav-label">History</div>
+      <div class="nav-dot"></div>
+    </button>
+    <button class="nav-item" onclick="navTo('profile',this)">
+      <div class="nav-icon">◯</div>
+      <div class="nav-label">Profile</div>
+      <div class="nav-dot"></div>
+    </button>
+  </nav>
 </div>
 
-<!-- ══════════════════════════
-     PAY SCREEN
-     ══════════════════════════ -->
-<div id="screen-pay" class="screen">
-  <div class="topbar"><div class="topbar-title">Send Payment</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
+<!-- ═══════════════════════════════════════ -->
+<!--  SCREEN: PAY                            -->
+<!-- ═══════════════════════════════════════ -->
+<div class="screen" id="screen-pay">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goBack()">←</button>
+    <div class="topbar-title">Pay someone</div>
+    <div style="width:38px"></div>
+  </div>
+
   <div class="pay-wrap">
     <div class="token-box">
-      <div style="font-size:13px;color:var(--txt3);font-weight:600;margin-bottom:10px">Recipient's Token</div>
+      <div class="field-label" style="margin-bottom:10px">Enter recipient's token</div>
       <div class="token-input-row">
-        <input id="pay-token" class="token-input" placeholder="ABC123DEF456" autocomplete="off">
-        <button class="scan-btn" onclick="scanToken()">📱</button>
+        <input class="token-input" type="text" id="pay-token" placeholder="e.g. PAM-4821" maxlength="8"
+          oninput="this.value=this.value.toUpperCase();resolveToken()" autocomplete="off">
+        <button class="scan-btn" onclick="fakeQRScan()" title="Scan QR code">⬚</button>
+      </div>
+      <div class="resolved-person hidden" id="resolved-person">
+        <div class="p-avatar" id="resolved-avatar" style="width:40px;height:40px;font-size:15px"></div>
+        <div>
+          <div class="p-name" id="resolved-name" style="font-size:14px;font-weight:500"></div>
+          <div class="p-sub" id="resolved-phone" style="font-size:12px;color:var(--txt3)"></div>
+        </div>
+        <div style="margin-left:auto;font-size:20px;color:var(--gl)">✓</div>
       </div>
     </div>
-    <div class="resolved-person hidden" id="pay-person">
-      <div style="flex:1">
-        <div style="font-size:14px;font-weight:600;color:var(--txt)">Paying</div>
-        <div id="pay-person-name" style="font-size:13px;color:var(--txt2);margin-top:2px"></div>
-      </div>
-      <button style="background:transparent;color:var(--err);font-weight:600;font-size:13px" onclick="clearPayPerson()">Clear</button>
-    </div>
+
     <div class="amount-big-wrap">
-      <div class="currency-label">Amount (KES)</div>
-      <div class="amount-big" id="pay-amount">0</div>
-      <div class="amount-numpad" id="pay-numpad"></div>
-    </div>
-    <div>
-      <label class="field-label" style="padding:0 0 8px">Note (optional)</label>
-      <textarea id="pay-note" class="pay-note" placeholder="What's this for?" rows="2"></textarea>
-    </div>
-    <div class="err-msg" id="pay-err"></div>
-    <button class="btn-main" onclick="doPay()">Confirm Payment</button>
-  </div>
-</div>
-
-<!-- ══════════════════════════
-     REQUEST SCREEN
-     ══════════════════════════ -->
-<div id="screen-request" class="screen">
-  <div class="topbar"><div class="topbar-title">Request Payment</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
-  <div class="req-wrap">
-    <div class="section-bar" style="padding:0;margin-bottom:20px"><div class="section-title">Friends & Contacts</div></div>
-    <div id="request-list" class="person-list"></div>
-  </div>
-</div>
-
-<!-- ══════════════════════════
-     MY TOKEN SCREEN
-     ══════════════════════════ -->
-<div id="screen-mytoken" class="screen">
-  <div class="topbar"><div class="topbar-title">Your Token</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
-  <div class="token-display-card">
-    <div class="token-lbl">Your Unique Token</div>
-    <div class="token-code" id="token-display">ABC123DEF456</div>
-    <div class="token-hint">Share this token to receive payments. It never changes.</div>
-    <button class="copy-btn" onclick="copyToken()">📋 Copy</button>
-    <div class="qr-placeholder" id="qr-placeholder">QR Code<small>(feature coming soon)</small></div>
-  </div>
-  <div style="padding:20px;text-align:center;color:var(--txt3);font-size:13px">
-    <p>💡 Your token is permanent and secure. Only you can use it to receive payments.</p>
-  </div>
-</div>
-
-<!-- ══════════════════════════
-     HISTORY SCREEN
-     ══════════════════════════ -->
-<div id="screen-history" class="screen">
-  <div class="topbar"><div class="topbar-title">Activity</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
-  <div style="padding:0 16px;flex:1;overflow-y:auto">
-    <div id="history-list" class="person-list" style="padding:0;border-top:1px solid var(--sand2)"></div>
-  </div>
-</div>
-
-<!-- ══════════════════════════
-     PROFILE SCREEN
-     ══════════════════════════ -->
-<div id="screen-profile" class="screen">
-  <div class="topbar"><div class="topbar-title">Profile</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
-  <div style="padding:20px;flex:1;overflow-y:auto">
-    <div class="avatar-pick" style="margin-bottom:24px">
-      <div id="profile-avatar-display" class="avatar-circle" style="width:80px;height:80px;font-size:32px"></div>
-      <div>
-        <div style="font-size:16px;font-weight:700;color:var(--txt)" id="profile-name-display">Name</div>
-        <div style="font-size:13px;color:var(--txt3);margin-top:4px" id="profile-phone-display">Phone</div>
-        <button style="background:none;color:var(--gl);font-weight:600;font-size:13px;margin-top:8px;cursor:pointer" onclick="openEditProfile()">Edit</button>
+      <div class="currency-label">Amount (USD)</div>
+      <div class="amount-big" id="pay-amount-display">$0</div>
+      <div class="amount-numpad">
+        <button class="an-btn" onclick="amountInput('1')">1</button>
+        <button class="an-btn" onclick="amountInput('2')">2</button>
+        <button class="an-btn" onclick="amountInput('3')">3</button>
+        <button class="an-btn" onclick="amountInput('4')">4</button>
+        <button class="an-btn" onclick="amountInput('5')">5</button>
+        <button class="an-btn" onclick="amountInput('6')">6</button>
+        <button class="an-btn" onclick="amountInput('7')">7</button>
+        <button class="an-btn" onclick="amountInput('8')">8</button>
+        <button class="an-btn" onclick="amountInput('9')">9</button>
+        <button class="an-btn" onclick="amountInput('.')">.</button>
+        <button class="an-btn" onclick="amountInput('0')">0</button>
+        <button class="an-btn del" onclick="amountDelete()">⌫</button>
       </div>
     </div>
-    <div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm)">
-      <div style="font-size:12px;color:var(--txt3);font-weight:600;margin-bottom:8px">Your Token</div>
-      <div style="font-family:'Courier New',monospace;font-size:14px;font-weight:600;color:var(--gd);word-break:break-all" id="profile-token-display">ABC123DEF456</div>
-      <button style="background:none;color:var(--gl);font-weight:600;font-size:13px;margin-top:12px;cursor:pointer" onclick="copyToken()">📋 Copy Token</button>
+
+    <textarea class="pay-note" id="pay-note" placeholder="Add a note (optional)" rows="2"></textarea>
+
+    <button class="btn-main" onclick="openPayConfirm()">Review payment</button>
+    <div class="err-msg" id="pay-err"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  SCREEN: REQUEST                        -->
+<!-- ═══════════════════════════════════════ -->
+<div class="screen" id="screen-request">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goBack()">←</button>
+    <div class="topbar-title">Request money</div>
+    <div style="width:38px"></div>
+  </div>
+
+  <div class="req-wrap">
+    <div class="token-box">
+      <div class="field-label" style="margin-bottom:10px">Request from (their token)</div>
+      <div class="token-input-row">
+        <input class="token-input" type="text" id="req-token" placeholder="e.g. PAM-4821" maxlength="8"
+          oninput="this.value=this.value.toUpperCase();resolveReqToken()" autocomplete="off">
+        <button class="scan-btn" onclick="fakeQRScanReq()" title="Scan QR code">⬚</button>
+      </div>
+      <div class="resolved-person hidden" id="req-resolved-person">
+        <div class="p-avatar" id="req-resolved-avatar" style="width:40px;height:40px;font-size:15px"></div>
+        <div>
+          <div class="p-name" id="req-resolved-name" style="font-size:14px;font-weight:500"></div>
+          <div class="p-sub" id="req-resolved-phone" style="font-size:12px;color:var(--txt3)"></div>
+        </div>
+        <div style="margin-left:auto;font-size:20px;color:var(--gl)">✓</div>
+      </div>
     </div>
-    <div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm)">
-      <button style="width:100%;background:none;color:var(--gd);font-weight:600;font-size:14px;padding:12px;cursor:pointer" onclick="openChangePin()">🔐 Change PIN</button>
+
+    <div class="amount-big-wrap">
+      <div class="currency-label">Amount (USD)</div>
+      <div class="amount-big" id="req-amount-display">$0</div>
+      <div class="amount-numpad">
+        <button class="an-btn" onclick="reqAmountInput('1')">1</button>
+        <button class="an-btn" onclick="reqAmountInput('2')">2</button>
+        <button class="an-btn" onclick="reqAmountInput('3')">3</button>
+        <button class="an-btn" onclick="reqAmountInput('4')">4</button>
+        <button class="an-btn" onclick="reqAmountInput('5')">5</button>
+        <button class="an-btn" onclick="reqAmountInput('6')">6</button>
+        <button class="an-btn" onclick="reqAmountInput('7')">7</button>
+        <button class="an-btn" onclick="reqAmountInput('8')">8</button>
+        <button class="an-btn" onclick="reqAmountInput('9')">9</button>
+        <button class="an-btn" onclick="reqAmountInput('.')">.</button>
+        <button class="an-btn" onclick="reqAmountInput('0')">0</button>
+        <button class="an-btn del" onclick="reqAmountDelete()">⌫</button>
+      </div>
     </div>
-    <div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm)">
-      <button style="width:100%;background:none;color:var(--gd);font-weight:600;font-size:14px;padding:12px;cursor:pointer" onclick="exportData()">💾 Backup Data</button>
-      <button style="width:100%;background:none;color:var(--gd);font-weight:600;font-size:14px;padding:12px;margin-top:8px;cursor:pointer" onclick="importData()">📂 Restore Data</button>
-      <input type="file" id="import-input" style="display:none" accept="application/json" onchange="loadBackup(this.files[0])">
+
+    <textarea class="pay-note" id="req-note" placeholder="What's this for? (optional)" rows="2"></textarea>
+
+    <button class="btn-main" onclick="openReqConfirm()">Send request</button>
+    <div class="err-msg" id="req-err"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  SCREEN: MY TOKEN                       -->
+<!-- ═══════════════════════════════════════ -->
+<div class="screen" id="screen-mytoken">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goBack()">←</button>
+    <div class="topbar-title">My token</div>
+    <div style="width:38px"></div>
+  </div>
+  <div style="padding:8px 0 32px">
+    <div class="token-display-card">
+      <div class="token-lbl">Your Pamoja token</div>
+      <div class="token-code" id="my-token-display">PAM-????</div>
+      <div class="token-hint">Share this with anyone who wants<br>to pay or request money from you</div>
+      <button class="copy-btn" onclick="copyToken()">⊕ Copy token</button>
+      <div class="qr-placeholder" id="qr-canvas">
+        <div style="font-size:11px;color:var(--txt3);padding:8px;text-align:center">QR code<br>scan to pay</div>
+      </div>
     </div>
-    <div style="background:var(--errp);border-radius:16px;padding:16px">
-      <button style="width:100%;background:none;color:var(--err);font-weight:600;font-size:14px;padding:12px;cursor:pointer" onclick="doLogout()">🚪 Sign Out</button>
+
+    <div style="padding:20px 20px 0">
+      <div class="section-title" style="margin-bottom:12px">How it works</div>
+      <div style="background:var(--white);border-radius:16px;padding:16px">
+        <div style="display:flex;gap:12px;padding:8px 0;border-bottom:.5px solid var(--sand2)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--gp);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--gd);flex-shrink:0">1</div>
+          <div style="font-size:13px;color:var(--txt2);padding-top:4px">Someone enters your token or scans your QR to pay or request money</div>
+        </div>
+        <div style="display:flex;gap:12px;padding:8px 0;border-bottom:.5px solid var(--sand2)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--gp);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--gd);flex-shrink:0">2</div>
+          <div style="font-size:13px;color:var(--txt2);padding-top:4px">Your profile appears — they confirm the amount and note</div>
+        </div>
+        <div style="display:flex;gap:12px;padding:8px 0">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--gp);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--gd);flex-shrink:0">3</div>
+          <div style="font-size:13px;color:var(--txt2);padding-top:4px">The debt is recorded and shows on both your home screens</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════
-     MODALS
-     ══════════════════════════ -->
-<div id="modal-pin" class="modal-backdrop" onclick="if(event.target===this)closeModal('modal-pin')">
-  <div class="modal-card">
+<!-- ═══════════════════════════════════════ -->
+<!--  SCREEN: HISTORY                        -->
+<!-- ═══════════════════════════════════════ -->
+<div class="screen" id="screen-history">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goBack()">←</button>
+    <div class="topbar-title">History</div>
+    <div style="width:38px"></div>
+  </div>
+  <div style="padding:0 16px 40px">
+    <div id="history-list">
+      <div class="empty-state"><div class="empty-icon">◷</div>No transactions yet</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  SCREEN: PROFILE                        -->
+<!-- ═══════════════════════════════════════ -->
+<div class="screen" id="screen-profile">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goBack()">←</button>
+    <div class="topbar-title">Profile</div>
+    <div style="width:38px"></div>
+  </div>
+
+  <div class="profile-hero">
+    <div class="profile-avatar" id="profile-avatar-display" onclick="document.getElementById('profile-avatar-file').click()"></div>
+    <input type="file" id="profile-avatar-file" accept="image/*" style="display:none" onchange="updateProfileAvatar(this)">
+    <div class="profile-name" id="profile-name-display"></div>
+    <div class="profile-phone" id="profile-phone-display"></div>
+    <div class="profile-token" id="profile-token-display"></div>
+  </div>
+
+  <div class="menu-card">
+    <div class="menu-row" onclick="goTo('screen-mytoken')">
+      <div class="menu-icon mi-green">#</div>
+      <div class="menu-label">My token and QR</div>
+      <div class="menu-arrow">›</div>
+    </div>
+    <div class="menu-row" onclick="openChangePin()">
+      <div class="menu-icon mi-amber">🔒</div>
+      <div class="menu-label">Change PIN</div>
+      <div class="menu-arrow">›</div>
+    </div>
+    <div class="menu-row" onclick="openEditProfile()">
+      <div class="menu-icon mi-green">✎</div>
+      <div class="menu-label">Edit profile</div>
+      <div class="menu-arrow">›</div>
+    </div>
+  </div>
+
+  <div class="menu-card">
+    <div class="menu-row" onclick="doLogout()">
+      <div class="menu-icon mi-red">→</div>
+      <div class="menu-label" style="color:#B91C1C">Sign out</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:24px;font-size:11px;color:var(--txt3)">
+    Pamoja v1.0 · All data stored on this device
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  MODAL: PAY CONFIRM                     -->
+<!-- ═══════════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-pay">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Confirm payment</div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--gp);border-radius:14px;margin-bottom:16px">
+        <div class="p-avatar" id="confirm-avatar" style="width:46px;height:46px;font-size:17px"></div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--gd)" id="confirm-name"></div>
+          <div style="font-size:12px;color:var(--txt3)" id="confirm-phone"></div>
+        </div>
+      </div>
+      <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:.5px solid var(--sand2)">
+          <span style="font-size:13px;color:var(--txt2)">Amount</span>
+          <span style="font-size:14px;font-weight:500;color:var(--gd)" id="confirm-amount"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0">
+          <span style="font-size:13px;color:var(--txt2)">Note</span>
+          <span style="font-size:13px;color:var(--gd)" id="confirm-note">—</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button style="flex:1;padding:14px;border-radius:12px;background:var(--sand2);border:none;font-size:14px;font-weight:500;color:var(--txt)" onclick="closeModal('modal-pay')">Cancel</button>
+        <button style="flex:2;padding:14px;border-radius:12px;background:var(--gd);border:none;font-size:14px;font-weight:500;color:var(--white)" onclick="confirmPay()">Confirm &amp; pay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  MODAL: REQUEST CONFIRM                 -->
+<!-- ═══════════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-req">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Confirm request</div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--ambp);border-radius:14px;margin-bottom:16px">
+        <div class="p-avatar" id="req-confirm-avatar" style="width:46px;height:46px;font-size:17px"></div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--gd)" id="req-confirm-name"></div>
+          <div style="font-size:12px;color:var(--txt3)" id="req-confirm-phone"></div>
+        </div>
+      </div>
+      <div style="background:var(--white);border-radius:14px;padding:16px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:.5px solid var(--sand2)">
+          <span style="font-size:13px;color:var(--txt2)">Requesting</span>
+          <span style="font-size:14px;font-weight:500;color:var(--amb)" id="req-confirm-amount"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0">
+          <span style="font-size:13px;color:var(--txt2)">Note</span>
+          <span style="font-size:13px;color:var(--gd)" id="req-confirm-note">—</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button style="flex:1;padding:14px;border-radius:12px;background:var(--sand2);border:none;font-size:14px;font-weight:500;color:var(--txt)" onclick="closeModal('modal-req')">Cancel</button>
+        <button style="flex:2;padding:14px;border-radius:12px;background:var(--amb);border:none;font-size:14px;font-weight:500;color:var(--white)" onclick="confirmReq()">Send request</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  MODAL: SUCCESS                         -->
+<!-- ═══════════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-success">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="success-anim">
+      <div class="success-circle" id="success-icon">✓</div>
+      <div class="success-title" id="success-title">Payment sent!</div>
+      <div class="success-sub" id="success-sub">Your payment has been recorded.</div>
+    </div>
+    <div style="padding:8px 22px 0">
+      <button class="btn-main" style="margin-top:0" onclick="closeModal('modal-success');goTo('screen-home')">Back to home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  MODAL: CHANGE PIN                      -->
+<!-- ═══════════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-pin">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
     <div class="modal-title">Change PIN</div>
-    <div class="modal-content">
-      <div class="pin-row"><div id="newpin-pin-0" class="pin-dot"></div><div id="newpin-pin-1" class="pin-dot"></div><div id="newpin-pin-2" class="pin-dot"></div><div id="newpin-pin-3" class="pin-dot"></div></div>
-      <div class="numpad" id="newpin-numpad"></div>
+    <div class="modal-body">
+      <div class="field-label" style="margin-bottom:8px">New 4-digit PIN</div>
+      <div class="pin-row" id="newpin-display">
+        <div class="pin-dot" id="np0">–</div>
+        <div class="pin-dot" id="np1">–</div>
+        <div class="pin-dot" id="np2">–</div>
+        <div class="pin-dot" id="np3">–</div>
+      </div>
+      <div class="numpad">
+        <button class="num-btn" onclick="pinInput('newpin',1)">1</button>
+        <button class="num-btn" onclick="pinInput('newpin',2)">2</button>
+        <button class="num-btn" onclick="pinInput('newpin',3)">3</button>
+        <button class="num-btn" onclick="pinInput('newpin',4)">4</button>
+        <button class="num-btn" onclick="pinInput('newpin',5)">5</button>
+        <button class="num-btn" onclick="pinInput('newpin',6)">6</button>
+        <button class="num-btn" onclick="pinInput('newpin',7)">7</button>
+        <button class="num-btn" onclick="pinInput('newpin',8)">8</button>
+        <button class="num-btn" onclick="pinInput('newpin',9)">9</button>
+        <button class="num-btn empty"></button>
+        <button class="num-btn" onclick="pinInput('newpin',0)">0</button>
+        <button class="num-btn del" onclick="pinDelete('newpin')">⌫</button>
+      </div>
+      <div class="err-msg" id="newpin-err"></div>
+      <button class="btn-main" style="margin-top:12px" onclick="saveNewPin()">Save new PIN</button>
     </div>
-    <div class="err-msg" id="newpin-err"></div>
-    <button class="btn-main" onclick="saveNewPin()">Save PIN</button>
   </div>
 </div>
 
-<div id="modal-edit" class="modal-backdrop" onclick="if(event.target===this)closeModal('modal-edit')">
-  <div class="modal-card">
-    <div class="modal-title">Edit Profile</div>
-    <div class="modal-content">
+<!-- ═══════════════════════════════════════ -->
+<!--  MODAL: EDIT PROFILE                    -->
+<!-- ═══════════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-edit">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Edit profile</div>
+    <div class="modal-body">
       <div class="field-group">
         <label class="field-label">Username</label>
-        <input id="edit-username" class="field-input" placeholder="Username">
+        <input class="field-input" type="text" id="edit-username" maxlength="20">
       </div>
       <div class="field-group">
-        <label class="field-label">Phone</label>
-        <input id="edit-phone" class="field-input" placeholder="Phone">
+        <label class="field-label">Phone number</label>
+        <input class="field-input" type="tel" id="edit-phone">
+      </div>
+      <div class="err-msg" id="edit-err"></div>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button style="flex:1;padding:14px;border-radius:12px;background:var(--sand2);border:none;font-size:14px;font-weight:500;color:var(--txt)" onclick="closeModal('modal-edit')">Cancel</button>
+        <button style="flex:2;padding:14px;border-radius:12px;background:var(--gd);border:none;font-size:14px;font-weight:500;color:var(--white)" onclick="saveEditProfile()">Save changes</button>
       </div>
     </div>
-    <div class="err-msg" id="edit-err"></div>
-    <button class="btn-main" onclick="saveEditProfile()">Save Changes</button>
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════ -->
+<!--  PERSON DETAIL MODAL                    -->
+<!-- ═══════════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-person">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body" style="padding-bottom:8px">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+        <div class="p-avatar" id="person-modal-avatar" style="width:54px;height:54px;font-size:20px"></div>
+        <div>
+          <div class="profile-name" id="person-modal-name" style="font-size:18px"></div>
+          <div class="profile-phone" id="person-modal-phone" style="font-size:12px"></div>
+          <div class="profile-token" id="person-modal-token" style="font-size:11px;margin-top:4px"></div>
+        </div>
+      </div>
+      <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:16px">
+        <div style="text-align:center">
+          <div style="font-size:12px;color:var(--txt3);margin-bottom:4px" id="person-modal-direction"></div>
+          <div class="bal-amount" id="person-modal-amount" style="font-size:32px"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:12px">
+        <button style="flex:1;padding:13px;border-radius:12px;background:var(--gd);border:none;font-size:13px;font-weight:500;color:var(--white)" id="person-pay-btn" onclick="payThisPerson()">Pay them</button>
+        <button style="flex:1;padding:13px;border-radius:12px;background:var(--ambp);border:none;font-size:13px;font-weight:500;color:var(--amb)" id="person-req-btn" onclick="requestFromPerson()">Request</button>
+      </div>
+      <div id="person-tx-list" style="padding-top:4px"></div>
+      <button style="width:100%;padding:13px;border-radius:12px;background:var(--sand2);border:none;font-size:13px;font-weight:500;color:var(--txt);margin-top:8px" onclick="closeModal('modal-person')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
-// ══════════════════════════
-//  STATE & STORAGE
-// ══════════════════════════
-const state = {
-  users: [],
+// ═══════════════════════════
+//  STATE
+// ═══════════════════════════
+let state = {
   currentUser: null,
-  transactions: [],
-  requests: []
+  users: [],        // {id, username, phone, pin, token, avatarData}
+  transactions: [], // {id, from, to, amount, note, date, type:'pay'|'request'}
+  debts: [],        // {id, creditor, debtor, amount, note, settled}
 };
 
-const pins = { login: '', signup: '', newpin: '' };
-let screenStack = [];
+// ── PIN BUFFERS ──
+const pins = { signup:'', login:'', newpin:'' };
 
-// PERSISTENT STORAGE WITH TOKEN PRESERVATION
-function save() {
-  const backup = state.currentUser?.token;
-  localStorage.setItem('pamoja-state', JSON.stringify(state));
-  if (backup && state.currentUser) state.currentUser.token = backup;
-}
+// ── AMOUNT BUFFERS ──
+let payAmountStr = '0';
+let reqAmountStr = '0';
 
+// ── SELECTED PERSON ──
+let selectedPayUser = null;
+let selectedReqUser = null;
+let selectedPersonModal = null;
+
+// ══════════════════════════
+//  STORAGE
+// ══════════════════════════
+function save() { try { localStorage.setItem('pamoja_state', JSON.stringify(state)); } catch(e){} }
 function load() {
-  const data = localStorage.getItem('pamoja-state');
-  if (data) {
-    const loaded = JSON.parse(data);
-    state.users = loaded.users || [];
-    state.transactions = loaded.transactions || [];
-    state.requests = loaded.requests || [];
-    if (loaded.currentUser) {
-      const user = state.users.find(u => u.id === loaded.currentUser.id);
-      if (user) state.currentUser = user;
-    }
-  }
+  try {
+    const s = localStorage.getItem('pamoja_state');
+    if (s) { state = JSON.parse(s); }
+    // seed demo users if fresh
+    if (!state.users) state.users = [];
+    if (!state.transactions) state.transactions = [];
+    if (!state.debts) state.debts = [];
+    if (state.users.length === 0) seedDemoData();
+  } catch(e) { seedDemoData(); }
 }
 
-function genToken() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let token = '';
-  for (let i = 0; i < 12; i++) token += chars.charAt(Math.floor(Math.random() * chars.length));
-  return token;
+function seedDemoData() {
+  state.users = [
+    {id:'u1', username:'sofia_chen', phone:'+1 555 0101', pin:'1234', token:'PAM-2841', avatarData:null},
+    {id:'u2', username:'marcus_osei', phone:'+233 20 111 2222', pin:'5678', token:'PAM-7732', avatarData:null},
+    {id:'u3', username:'nadia_w', phone:'+254 712 345678', pin:'0000', token:'PAM-5519', avatarData:null},
+  ];
+  state.transactions = [];
+  state.debts = [];
 }
 
 // ══════════════════════════
-//  AUTH
+//  HELPERS
+// ══════════════════════════
+function genId() { return Math.random().toString(36).slice(2,9); }
+function genToken() { return 'PAM-' + Math.floor(1000+Math.random()*9000); }
+function fmtAmt(n) { return '$' + parseFloat(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function fmtDate(d) {
+  const now = new Date(), dt = new Date(d);
+  const diff = (now-dt)/1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff/60)+'m ago';
+  if (diff < 86400) return Math.floor(diff/3600)+'h ago';
+  return dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+function initials(name) { return name.split(/[_\s]/)[0].slice(0,2).toUpperCase(); }
+function avatarBg(id) {
+  const colors = ['#1A3A2A','#2D5A3D','#4A8C63','#D4821A','#185FA5','#7B4EA0'];
+  let h=0; for(let c of id) h=(h*31+c.charCodeAt(0))%colors.length;
+  return colors[h];
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function renderAvatar(el, user, size=46) {
+  el.style.width = size+'px';
+  el.style.height = size+'px';
+  el.style.borderRadius = '50%';
+  el.style.display = 'flex';
+  el.style.alignItems = 'center';
+  el.style.justifyContent = 'center';
+  el.style.overflow = 'hidden';
+  if (user && user.avatarData) {
+    el.innerHTML = `<img src="${user.avatarData}" style="width:100%;height:100%;object-fit:cover">`;
+  } else {
+    el.style.background = user ? avatarBg(user.id) : '#4A8C63';
+    el.style.color = 'white';
+    el.style.fontSize = Math.floor(size*0.35)+'px';
+    el.style.fontWeight = '500';
+    el.textContent = user ? initials(user.username) : '?';
+  }
+}
+
+// ══════════════════════════
+//  SCREEN NAVIGATION
+// ══════════════════════════
+let screenStack = [];
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if (id !== 'screen-signup') screenStack.push(id);
+}
+function goBack() {
+  screenStack.pop();
+  const prev = screenStack.pop() || 'screen-home';
+  goTo(prev);
+}
+
+function navTo(tab, el) {
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  const map = {home:'screen-home', pay:'screen-pay', history:'screen-history', profile:'screen-profile'};
+  goTo(map[tab]);
+  if (tab === 'history') renderHistory();
+}
+
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ══════════════════════════
+//  AUTH TAB
 // ══════════════════════════
 function switchTab(tab) {
-  const loginTab = document.getElementById('login-tab');
-  const signupTab = document.getElementById('signup-tab');
-  const tabs = document.querySelectorAll('.auth-tab');
-  
-  if (tab === 'login') {
-    loginTab.style.display = 'flex';
-    signupTab.style.display = 'none';
-    tabs[0].classList.add('active');
-    tabs[1].classList.remove('active');
-  } else {
-    loginTab.style.display = 'none';
-    signupTab.style.display = 'flex';
-    tabs[0].classList.remove('active');
-    tabs[1].classList.add('active');
+  document.getElementById('tab-signup').classList.toggle('active', tab==='signup');
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('form-signup').classList.toggle('hidden', tab!=='signup');
+  document.getElementById('form-login').classList.toggle('hidden', tab!=='login');
+  pins.signup = ''; pins.login = '';
+  updatePinDisplay('signup'); updatePinDisplay('login');
+}
+
+// ══════════════════════════
+//  PIN INPUT
+// ══════════════════════════
+function updatePinDisplay(ctx) {
+  const len = pins[ctx].length;
+  for(let i=0;i<4;i++) {
+    const dot = document.getElementById((ctx==='signup'?'sp':ctx==='login'?'lp':'np')+i);
+    if (!dot) continue;
+    dot.textContent = i < len ? '●' : '–';
+    dot.classList.toggle('filled', i < len);
+    dot.classList.remove('err');
   }
 }
-
-function buildNumpad(pinKey) {
-  const container = document.getElementById(pinKey + '-numpad');
-  container.innerHTML = '';
-  for (let i = 1; i <= 9; i++) {
-    const btn = document.createElement('button');
-    btn.className = 'num-btn';
-    btn.textContent = i;
-    btn.onclick = () => addPin(pinKey, i);
-    container.appendChild(btn);
+function pinInput(ctx, digit) {
+  if (pins[ctx].length < 4) { pins[ctx] += digit; updatePinDisplay(ctx); }
+}
+function pinDelete(ctx) {
+  pins[ctx] = pins[ctx].slice(0,-1); updatePinDisplay(ctx);
+}
+function pinError(ctx) {
+  const prefix = ctx==='signup'?'sp':ctx==='login'?'lp':'np';
+  for(let i=0;i<4;i++) {
+    const d = document.getElementById(prefix+i);
+    if (d) { d.classList.add('err'); d.classList.remove('filled'); }
   }
-  container.appendChild(Object.assign(document.createElement('button'), {
-    className: 'num-btn empty',
-    innerHTML: '&nbsp;'
-  }));
-  const delBtn = document.createElement('button');
-  delBtn.className = 'num-btn del';
-  delBtn.textContent = '⌫';
-  delBtn.onclick = () => removePin(pinKey);
-  container.appendChild(delBtn);
+  setTimeout(() => { pins[ctx]=''; updatePinDisplay(ctx); }, 700);
 }
 
-function addPin(key, num) {
-  if (pins[key].length < 4) {
-    pins[key] += num;
-    updatePinDisplay(key);
-  }
+// ══════════════════════════
+//  AVATAR PREVIEW
+// ══════════════════════════
+function previewAvatar(input) {
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const preview = document.getElementById('signup-avatar-preview');
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    document.getElementById('signup-avatar-icon').style.display = 'none';
+    previewAvatar._data = e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
-function removePin(key) {
-  pins[key] = pins[key].slice(0, -1);
-  updatePinDisplay(key);
+function updateProfileAvatar(input) {
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    state.currentUser.avatarData = e.target.result;
+    save();
+    renderProfileScreen();
+    renderHomeAvatar();
+    toast('Photo updated');
+  };
+  reader.readAsDataURL(file);
 }
 
-function updatePinDisplay(key) {
-  for (let i = 0; i < 4; i++) {
-    const dot = document.getElementById(key + '-pin-' + i);
-    if (i < pins[key].length) {
-      dot.classList.add('filled');
-      dot.textContent = pins[key][i];
-    } else {
-      dot.classList.remove('filled', 'err');
-      dot.textContent = '';
-    }
-  }
-}
-
-function pinError(key) {
-  for (let i = 0; i < 4; i++) {
-    document.getElementById(key + '-pin-' + i).classList.add('err');
-  }
-  setTimeout(() => {
-    pins[key] = '';
-    updatePinDisplay(key);
-  }, 800);
-}
-
+// ══════════════════════════
+//  SIGN UP
+// ══════════════════════════
 function doSignup() {
   const username = document.getElementById('signup-username').value.trim();
   const phone = document.getElementById('signup-phone').value.trim();
+  const pin = pins.signup;
   const err = document.getElementById('signup-err');
-  err.textContent = '';
 
-  if (!username) { err.textContent = 'Username required'; return; }
+  if (!username) { err.textContent = 'Enter a username'; return; }
   if (!/^[a-zA-Z0-9_]+$/.test(username)) { err.textContent = 'Letters, numbers, underscores only'; return; }
-  if (state.users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-    err.textContent = 'Username taken'; return;
+  if (state.users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
+    err.textContent = 'Username already taken'; return;
   }
-  if (!phone) { err.textContent = 'Phone required'; return; }
-  if (pins.signup.length < 4) { err.textContent = 'Enter 4-digit PIN'; pinError('signup'); return; }
+  if (!phone) { err.textContent = 'Enter your phone number'; return; }
+  if (pin.length < 4) { err.textContent = 'Enter a 4-digit PIN'; pinError('signup'); return; }
 
-  const newUser = {
-    id: Math.random().toString(36).substr(2, 9),
-    username,
-    phone,
-    pin: pins.signup,
-    token: genToken(),
-    avatarData: null,
-    createdAt: new Date().toISOString()
-  };
-
-  state.users.push(newUser);
-  state.currentUser = newUser;
-  save();
-  enterApp();
-  toast('Welcome, ' + username + '!');
-}
-
-function doLogin() {
-  const id = document.getElementById('login-id').value.trim();
-  const err = document.getElementById('login-err');
   err.textContent = '';
-
-  const user = state.users.find(u => u.id === id);
-  if (!user) { err.textContent = 'ID not found'; return; }
-  if (pins.login !== user.pin) {
-    err.textContent = 'Wrong PIN';
-    pinError('login');
-    return;
-  }
-
+  const user = {
+    id: genId(),
+    username, phone, pin,
+    token: genToken(),
+    avatarData: previewAvatar._data || null,
+  };
+  state.users.push(user);
   state.currentUser = user;
   save();
   enterApp();
-  toast('Welcome back, ' + user.username + '!');
 }
 
+// ══════════════════════════
+//  LOGIN
+// ══════════════════════════
+function doLogin() {
+  const id = document.getElementById('login-id').value.trim().toLowerCase();
+  const pin = pins.login;
+  const err = document.getElementById('login-err');
+
+  const user = state.users.find(u =>
+    u.username.toLowerCase() === id || u.phone === id || u.phone.replace(/\s/g,'') === id.replace(/\s/g,'')
+  );
+  if (!user) { err.textContent = 'User not found'; return; }
+  if (user.pin !== pin) { err.textContent = 'Wrong PIN'; pinError('login'); return; }
+
+  err.textContent = '';
+  state.currentUser = user;
+  save();
+  enterApp();
+}
+
+// ══════════════════════════
+//  ENTER APP
+// ══════════════════════════
 function enterApp() {
-  buildNumpad('pay');
-  buildNumpad('amount');
-  goTo('screen-home');
   renderHomeScreen();
   renderProfileScreen();
-  document.getElementById('token-display').textContent = state.currentUser.token;
-  document.getElementById('profile-token-display').textContent = state.currentUser.token;
-}
-
-// ══════════════════════════
-//  NAVIGATION
-// ══════════════════════════
-function goTo(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
-  screenStack.push(screenId);
-
-  if (screenId === 'screen-home') renderHomeScreen();
-  else if (screenId === 'screen-pay') { document.getElementById('pay-token').value = ''; document.getElementById('pay-amount').textContent = '0'; clearPayPerson(); }
-  else if (screenId === 'screen-request') renderRequestScreen();
-  else if (screenId === 'screen-history') renderHistoryScreen();
+  document.getElementById('my-token-display').textContent = state.currentUser.token;
+  goTo('screen-home');
+  screenStack = ['screen-home'];
 }
 
 // ══════════════════════════
 //  HOME SCREEN
 // ══════════════════════════
 function renderHomeScreen() {
+  const me = state.currentUser;
+  document.getElementById('home-greeting').textContent = me.username.split('_')[0];
+  renderHomeAvatar();
+  renderDebts();
+}
+
+function renderHomeAvatar() {
+  const el = document.getElementById('home-avatar');
+  renderAvatar(el, state.currentUser, 40);
+}
+
+function computeDebts() {
+  // compute net per person from transactions
+  const net = {}; // other_user_id => amount (positive = they owe me, negative = I owe them)
   const me = state.currentUser.id;
-  let owe = 0, owed = 0;
-
-  state.transactions.forEach(tx => {
-    if (tx.from === me) owe += tx.amount;
-    if (tx.to === me) owed += tx.amount;
-  });
-
-  state.requests.forEach(req => {
-    if (req.creditor === me) owed += req.amount;
-    if (req.debtor === me) owe += req.amount;
-  });
-
-  const net = owed - owe;
-  document.getElementById('home-balance').textContent = 'KES ' + (net >= 0 ? '+' : '') + net.toLocaleString();
-  document.getElementById('home-net').textContent = (net > 0 ? 'Net credit: KES ' + net.toLocaleString() : net < 0 ? 'You owe: KES ' + Math.abs(net).toLocaleString() : 'Settled up');
-  document.getElementById('home-owe-count').textContent = countDebtors(me);
-  document.getElementById('home-owed-count').textContent = countCreditors(me);
-
-  const recent = [];
-  state.transactions.slice(-3).reverse().forEach(tx => {
-    const other = state.users.find(u => u.id === (tx.from === me ? tx.to : tx.from));
-    if (other) recent.push({ ...tx, other });
-  });
-
-  document.getElementById('home-recent').innerHTML = recent.length > 0
-    ? recent.map(tx => personCardHtml(tx.other, tx.from === me ? 'pay' : 'owe', tx.amount)).join('')
-    : '<div class="empty-state"><div class="empty-icon">💬</div>No transactions yet. Start by sending or requesting a payment!</div>';
+  for (const tx of state.transactions) {
+    if (tx.from === me) {
+      // I paid them — I owe them less (or they owe me more)
+      net[tx.to] = (net[tx.to]||0) - tx.amount;
+    } else if (tx.to === me) {
+      net[tx.from] = (net[tx.from]||0) + tx.amount;
+    }
+  }
+  // also include requests that are recorded as debts
+  for (const d of state.debts) {
+    if (d.settled) continue;
+    if (d.creditor === me) {
+      net[d.debtor] = (net[d.debtor]||0) + d.amount;
+    } else if (d.debtor === me) {
+      net[d.creditor] = (net[d.creditor]||0) - d.amount;
+    }
+  }
+  return net;
 }
 
-function countDebtors(me) {
-  const debtors = new Set();
-  state.transactions.forEach(tx => {
-    if (tx.to === me && tx.from) debtors.add(tx.from);
+function renderDebts() {
+  const net = computeDebts();
+  let oweTotal = 0, owedTotal = 0;
+  const oweList = [], owedList = [];
+
+  for (const [uid, amt] of Object.entries(net)) {
+    if (Math.abs(amt) < 0.01) continue;
+    const user = state.users.find(u => u.id === uid);
+    if (!user) continue;
+    if (amt > 0) { owedTotal += amt; owedList.push({user, amt}); }
+    else { oweTotal += Math.abs(amt); oweList.push({user, amt: Math.abs(amt)}); }
+  }
+
+  document.getElementById('home-owe-total').textContent = fmtAmt(oweTotal);
+  document.getElementById('home-owed-total').textContent = fmtAmt(owedTotal);
+
+  const net2 = owedTotal - oweTotal;
+  document.getElementById('home-net-balance').textContent = fmtAmt(Math.abs(net2));
+  document.getElementById('home-net-label').textContent = net2 > 0.01 ? 'in your favour' :
+    net2 < -0.01 ? 'you owe overall' : 'All settled up';
+
+  const owedEl = document.getElementById('home-owed-list');
+  const oweEl = document.getElementById('home-owe-list');
+
+  if (owedList.length === 0) {
+    owedEl.innerHTML = '<div class="empty-state"><div class="empty-icon">✓</div>No one owes you yet</div>';
+  } else {
+    owedEl.innerHTML = owedList.map(({user,amt}) => personCardHTML(user, amt, 'owed')).join('');
+  }
+
+  if (oweList.length === 0) {
+    oweEl.innerHTML = '<div class="empty-state"><div class="empty-icon">✓</div>You don\'t owe anyone</div>';
+  } else {
+    oweEl.innerHTML = oweList.map(({user,amt}) => personCardHTML(user, amt, 'owe')).join('');
+  }
+
+  // attach click handlers
+  owedEl.querySelectorAll('.person-card').forEach(c => {
+    c.addEventListener('click', () => openPersonModal(c.dataset.uid));
   });
-  state.requests.forEach(req => {
-    if (req.creditor === me && req.debtor) debtors.add(req.debtor);
+  oweEl.querySelectorAll('.person-card').forEach(c => {
+    c.addEventListener('click', () => openPersonModal(c.dataset.uid));
   });
-  return debtors.size;
+  // render avatars
+  document.querySelectorAll('.avatar-slot').forEach(el => {
+    const uid = el.dataset.uid;
+    const user = state.users.find(u => u.id === uid);
+    renderAvatar(el, user, 46);
+  });
 }
 
-function countCreditors(me) {
-  const creditors = new Set();
-  state.transactions.forEach(tx => {
-    if (tx.from === me && tx.to) creditors.add(tx.to);
-  });
-  state.requests.forEach(req => {
-    if (req.debtor === me && req.creditor) creditors.add(req.creditor);
-  });
-  return creditors.size;
+function personCardHTML(user, amt, type) {
+  const label = type === 'owed' ? 'owes you' : 'you owe';
+  const amtClass = type === 'owed' ? 'amount-green' : 'amount-red';
+  const badgeClass = type === 'owed' ? 'badge-owed' : 'badge-owe';
+  return `
+  <div class="person-card" data-uid="${user.id}" style="cursor:pointer">
+    <div class="p-avatar avatar-slot" data-uid="${user.id}" style="width:46px;height:46px"></div>
+    <div class="p-info">
+      <div class="p-name">${user.username}</div>
+      <div class="p-sub">${user.phone}</div>
+    </div>
+    <div class="p-right">
+      <div class="p-amount ${amtClass}">${fmtAmt(amt)}</div>
+      <span class="p-badge ${badgeClass}">${label}</span>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════
+//  PERSON DETAIL MODAL
+// ══════════════════════════
+function openPersonModal(uid) {
+  const user = state.users.find(u => u.id === uid);
+  if (!user) return;
+  selectedPersonModal = user;
+
+  const net = computeDebts();
+  const amt = net[uid] || 0;
+
+  renderAvatar(document.getElementById('person-modal-avatar'), user, 54);
+  document.getElementById('person-modal-name').textContent = user.username;
+  document.getElementById('person-modal-phone').textContent = user.phone;
+  document.getElementById('person-modal-token').textContent = user.token;
+
+  const dir = amt > 0.01 ? 'owes you' : amt < -0.01 ? 'you owe' : 'all settled';
+  document.getElementById('person-modal-direction').textContent = dir;
+  document.getElementById('person-modal-amount').textContent = fmtAmt(Math.abs(amt));
+  document.getElementById('person-modal-amount').style.color = amt > 0 ? 'var(--gl)' : amt < 0 ? '#B91C1C' : 'var(--txt)';
+
+  // recent transactions with this person
+  const me = state.currentUser.id;
+  const txs = state.transactions.filter(t =>
+    (t.from===me&&t.to===uid)||(t.from===uid&&t.to===me)
+  ).slice(-5).reverse();
+
+  const txEl = document.getElementById('person-tx-list');
+  if (txs.length === 0) {
+    txEl.innerHTML = '<div style="font-size:12px;color:var(--txt3);text-align:center;padding:8px 0">No transactions yet</div>';
+  } else {
+    txEl.innerHTML = txs.map(tx => {
+      const out = tx.from === me;
+      return `<div class="tx-item">
+        <div class="tx-icon ${out?'txi-out':'txi-in'}">${out?'↑':'↓'}</div>
+        <div class="tx-body"><div class="tx-name">${out?'You paid':'They paid'}</div>
+          <div class="tx-note">${tx.note||'—'}</div></div>
+        <div class="tx-right">
+          <div class="tx-amount ${out?'color-red':'color-green'}">${out?'-':'+'} ${fmtAmt(tx.amount)}</div>
+          <div class="tx-date">${fmtDate(tx.date)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  openModal('modal-person');
+}
+
+function payThisPerson() {
+  closeModal('modal-person');
+  document.getElementById('pay-token').value = selectedPersonModal.token;
+  resolveToken();
+  goTo('screen-pay');
+}
+
+function requestFromPerson() {
+  closeModal('modal-person');
+  document.getElementById('req-token').value = selectedPersonModal.token;
+  resolveReqToken();
+  goTo('screen-request');
 }
 
 // ══════════════════════════
 //  PAY SCREEN
 // ══════════════════════════
-let payAmount = 0;
-
-function buildAmountNumpad() {
-  const container = document.getElementById('amount-numpad');
-  container.innerHTML = '';
-  for (let i = 1; i <= 9; i++) {
-    const btn = document.createElement('button');
-    btn.className = 'an-btn';
-    btn.textContent = i;
-    btn.onclick = () => addAmount(i);
-    container.appendChild(btn);
-  }
-  container.appendChild(Object.assign(document.createElement('button'), {
-    className: 'an-btn empty',
-    innerHTML: '&nbsp;'
-  }));
-  const delBtn = document.createElement('button');
-  delBtn.className = 'an-btn del';
-  delBtn.textContent = '⌫';
-  delBtn.onclick = () => removeAmount();
-  container.appendChild(delBtn);
-}
-
-function addAmount(num) {
-  payAmount = (payAmount * 10 + num);
-  if (payAmount > 9999999) payAmount = 9999999;
-  updateAmount();
-}
-
-function removeAmount() {
-  payAmount = Math.floor(payAmount / 10);
-  updateAmount();
-}
-
-function updateAmount() {
-  document.getElementById('pay-amount').textContent = payAmount.toLocaleString();
-}
-
-function scanToken() {
-  const token = prompt('Enter recipient token:');
-  if (token) {
-    document.getElementById('pay-token').value = token.toUpperCase();
-    resolvePayPerson();
-  }
-}
-
-function resolvePayPerson() {
-  const token = document.getElementById('pay-token').value.toUpperCase();
-  const user = state.users.find(u => u.token === token);
-  const personEl = document.getElementById('pay-person');
-  
-  if (user && user.id !== state.currentUser.id) {
-    document.getElementById('pay-person-name').textContent = user.username;
-    personEl.classList.remove('hidden');
+function resolveToken() {
+  const val = document.getElementById('pay-token').value.trim().toUpperCase();
+  const user = state.users.find(u => u.token === val && u.id !== state.currentUser.id);
+  selectedPayUser = user || null;
+  const box = document.getElementById('resolved-person');
+  if (user) {
+    box.classList.remove('hidden');
+    renderAvatar(document.getElementById('resolved-avatar'), user, 40);
+    document.getElementById('resolved-name').textContent = user.username;
+    document.getElementById('resolved-phone').textContent = user.phone;
   } else {
-    clearPayPerson();
+    box.classList.add('hidden');
   }
 }
 
-function clearPayPerson() {
-  document.getElementById('pay-person').classList.add('hidden');
-  document.getElementById('pay-token').value = '';
+function fakeQRScan() {
+  // simulate scanning a random existing user's token
+  const others = state.users.filter(u => u.id !== state.currentUser.id);
+  if (others.length === 0) { toast('No other users to scan'); return; }
+  const u = others[Math.floor(Math.random()*others.length)];
+  document.getElementById('pay-token').value = u.token;
+  resolveToken();
+  toast('QR scanned: ' + u.token);
 }
 
-function doPay() {
-  const token = document.getElementById('pay-token').value.toUpperCase();
-  const note = document.getElementById('pay-note').value;
+function fakeQRScanReq() {
+  const others = state.users.filter(u => u.id !== state.currentUser.id);
+  if (others.length === 0) { toast('No other users to scan'); return; }
+  const u = others[Math.floor(Math.random()*others.length)];
+  document.getElementById('req-token').value = u.token;
+  resolveReqToken();
+  toast('QR scanned: ' + u.token);
+}
+
+function amountInput(d) {
+  if (d==='.' && payAmountStr.includes('.')) return;
+  if (payAmountStr === '0' && d !== '.') payAmountStr = d;
+  else payAmountStr += d;
+  const parts = payAmountStr.split('.');
+  if (parts[1] && parts[1].length > 2) { payAmountStr = payAmountStr.slice(0,-1); return; }
+  document.getElementById('pay-amount-display').textContent = '$' + payAmountStr;
+}
+function amountDelete() {
+  payAmountStr = payAmountStr.slice(0,-1) || '0';
+  document.getElementById('pay-amount-display').textContent = '$' + payAmountStr;
+}
+
+function openPayConfirm() {
   const err = document.getElementById('pay-err');
+  if (!selectedPayUser) { err.textContent = 'Enter a valid recipient token'; return; }
+  const amt = parseFloat(payAmountStr);
+  if (!amt || amt <= 0) { err.textContent = 'Enter an amount'; return; }
   err.textContent = '';
 
-  if (!token) { err.textContent = 'Enter recipient token'; return; }
-  const recipient = state.users.find(u => u.token === token);
-  if (!recipient) { err.textContent = 'Token not found'; return; }
-  if (recipient.id === state.currentUser.id) { err.textContent = 'Cannot pay yourself'; return; }
-  if (payAmount <= 0) { err.textContent = 'Enter amount'; return; }
+  renderAvatar(document.getElementById('confirm-avatar'), selectedPayUser, 46);
+  document.getElementById('confirm-name').textContent = selectedPayUser.username;
+  document.getElementById('confirm-phone').textContent = selectedPayUser.phone;
+  document.getElementById('confirm-amount').textContent = fmtAmt(amt);
+  const note = document.getElementById('pay-note').value.trim();
+  document.getElementById('confirm-note').textContent = note || '—';
+  openModal('modal-pay');
+}
 
-  state.transactions.push({
-    id: Math.random().toString(36).substr(2, 9),
+function confirmPay() {
+  const amt = parseFloat(payAmountStr);
+  const note = document.getElementById('pay-note').value.trim();
+  const tx = {
+    id: genId(),
     from: state.currentUser.id,
-    to: recipient.id,
-    amount: payAmount,
+    to: selectedPayUser.id,
+    amount: amt,
     note,
-    date: new Date().toISOString()
-  });
-
+    date: new Date().toISOString(),
+    type: 'pay'
+  };
+  state.transactions.push(tx);
   save();
-  payAmount = 0;
-  updateAmount();
-  document.getElementById('pay-note').value = '';
+  closeModal('modal-pay');
+
+  // reset pay screen
+  payAmountStr = '0';
+  document.getElementById('pay-amount-display').textContent = '$0';
   document.getElementById('pay-token').value = '';
-  clearPayPerson();
-  toast('Payment sent to ' + recipient.username);
+  document.getElementById('pay-note').value = '';
+  document.getElementById('resolved-person').classList.add('hidden');
+  selectedPayUser = null;
+
+  document.getElementById('success-icon').textContent = '✓';
+  document.getElementById('success-title').textContent = 'Payment recorded!';
+  document.getElementById('success-sub').textContent = fmtAmt(amt) + ' to ' + tx.to.replace('u','user');
+
+  // show success then go home
   renderHomeScreen();
-  goTo('screen-home');
+  openModal('modal-success');
 }
 
 // ══════════════════════════
 //  REQUEST SCREEN
 // ══════════════════════════
-function renderRequestScreen() {
-  const html = state.users
-    .filter(u => u.id !== state.currentUser.id)
-    .map(u => `
-      <div class="person-card" onclick="openRequestModal('${u.id}')">
-        ${avatarHtml(u)}
-        <div class="p-info">
-          <div class="p-name">${u.username}</div>
-          <div class="p-sub">${u.phone}</div>
-        </div>
-        <div style="font-size:18px">→</div>
-      </div>
-    `).join('');
-  document.getElementById('request-list').innerHTML = html || '<div class="empty-state">No contacts yet</div>';
+function resolveReqToken() {
+  const val = document.getElementById('req-token').value.trim().toUpperCase();
+  const user = state.users.find(u => u.token === val && u.id !== state.currentUser.id);
+  selectedReqUser = user || null;
+  const box = document.getElementById('req-resolved-person');
+  if (user) {
+    box.classList.remove('hidden');
+    renderAvatar(document.getElementById('req-resolved-avatar'), user, 40);
+    document.getElementById('req-resolved-name').textContent = user.username;
+    document.getElementById('req-resolved-phone').textContent = user.phone;
+  } else {
+    box.classList.add('hidden');
+  }
 }
 
-function openRequestModal(userId) {
-  const user = state.users.find(u => u.id === userId);
-  const amount = prompt('Request amount (KES):');
-  if (!amount || isNaN(amount)) return;
+function reqAmountInput(d) {
+  if (d==='.' && reqAmountStr.includes('.')) return;
+  if (reqAmountStr === '0' && d !== '.') reqAmountStr = d;
+  else reqAmountStr += d;
+  const parts = reqAmountStr.split('.');
+  if (parts[1] && parts[1].length > 2) { reqAmountStr = reqAmountStr.slice(0,-1); return; }
+  document.getElementById('req-amount-display').textContent = '$' + reqAmountStr;
+}
+function reqAmountDelete() {
+  reqAmountStr = reqAmountStr.slice(0,-1) || '0';
+  document.getElementById('req-amount-display').textContent = '$' + reqAmountStr;
+}
 
-  const note = prompt('Note:', '');
+function openReqConfirm() {
+  const err = document.getElementById('req-err');
+  if (!selectedReqUser) { err.textContent = 'Enter a valid token'; return; }
+  const amt = parseFloat(reqAmountStr);
+  if (!amt || amt <= 0) { err.textContent = 'Enter an amount'; return; }
+  err.textContent = '';
 
-  state.requests.push({
-    id: Math.random().toString(36).substr(2, 9),
+  renderAvatar(document.getElementById('req-confirm-avatar'), selectedReqUser, 46);
+  document.getElementById('req-confirm-name').textContent = selectedReqUser.username;
+  document.getElementById('req-confirm-phone').textContent = selectedReqUser.phone;
+  document.getElementById('req-confirm-amount').textContent = fmtAmt(amt);
+  const note = document.getElementById('req-note').value.trim();
+  document.getElementById('req-confirm-note').textContent = note || '—';
+  openModal('modal-req');
+}
+
+function confirmReq() {
+  const amt = parseFloat(reqAmountStr);
+  const note = document.getElementById('req-note').value.trim();
+  // record as a debt: creditor = me, debtor = them
+  const debt = {
+    id: genId(),
     creditor: state.currentUser.id,
-    debtor: userId,
-    amount: parseFloat(amount),
-    note: note || '',
-    settled: false,
-    date: new Date().toISOString()
-  });
-
+    debtor: selectedReqUser.id,
+    amount: amt,
+    note,
+    date: new Date().toISOString(),
+    settled: false
+  };
+  state.debts.push(debt);
   save();
-  toast('Request sent to ' + user.username);
+  closeModal('modal-req');
+
+  reqAmountStr = '0';
+  document.getElementById('req-amount-display').textContent = '$0';
+  document.getElementById('req-token').value = '';
+  document.getElementById('req-note').value = '';
+  document.getElementById('req-resolved-person').classList.add('hidden');
+  selectedReqUser = null;
+
+  document.getElementById('success-icon').textContent = '↓';
+  document.getElementById('success-title').textContent = 'Request sent!';
+  document.getElementById('success-sub').textContent = fmtAmt(amt) + ' request recorded. It will show on your home screen.';
+
   renderHomeScreen();
-  goTo('screen-home');
+  openModal('modal-success');
 }
 
 // ══════════════════════════
-//  HISTORY SCREEN
+//  HISTORY
 // ══════════════════════════
-function renderHistoryScreen() {
+function renderHistory() {
   const me = state.currentUser.id;
-  const items = [];
+  const allTx = [...state.transactions].filter(t => t.from===me||t.to===me);
+  const allDebts = [...state.debts].filter(d => d.creditor===me||d.debtor===me);
 
-  state.transactions.forEach(tx => {
-    if (tx.from === me || tx.to === me) {
-      const other = state.users.find(u => u.id === (tx.from === me ? tx.to : tx.from));
-      if (other) items.push({ type: 'pay', ...tx, other });
-    }
-  });
+  const combined = [
+    ...allTx.map(t => ({...t, _type:'tx'})),
+    ...allDebts.map(d => ({...d, _type:'debt', date:d.date}))
+  ].sort((a,b) => new Date(b.date)-new Date(a.date));
 
-  state.requests.forEach(req => {
-    if (req.creditor === me || req.debtor === me) {
-      const other = state.users.find(u => u.id === (req.creditor === me ? req.debtor : req.creditor));
-      if (other) items.push({ type: 'req', ...req, other });
-    }
-  });
+  const el = document.getElementById('history-list');
+  if (combined.length === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">◷</div>No transactions yet</div>';
+    return;
+  }
 
-  items.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  document.getElementById('history-list').innerHTML = items.length > 0
-    ? items.map(item => historyItemHtml(item)).join('')
-    : '<div class="empty-state" style="padding:60px 20px">No activity yet</div>';
-}
-
-function historyItemHtml(item) {
-  const me = state.currentUser.id;
-  if (item.type === 'pay') {
-    const out = item.from === me;
-    return `
-      <div class="tx-item">
-        <div class="tx-icon" style="background:${out?'#FFF4E0':'var(--gp)'};color:${out?'var(--amb)':'var(--gl)'}">💳</div>
+  el.innerHTML = combined.map(item => {
+    if (item._type === 'tx') {
+      const out = item.from === me;
+      const other = state.users.find(u => u.id === (out?item.to:item.from));
+      const name = other ? other.username : 'Unknown';
+      return `<div class="tx-item">
+        <div class="tx-icon ${out?'txi-out':'txi-in'}">${out?'↑':'↓'}</div>
         <div class="tx-body">
-          <div class="tx-name">${out?'Paid '+item.other.username:item.other.username+' paid you'}</div>
+          <div class="tx-name">${out?'Paid '+name:name+' paid you'}</div>
           <div class="tx-note">${item.note||'—'}</div>
         </div>
         <div class="tx-right">
-          <div class="tx-amount ${out?'color-red':'color-green'}">${out?'-':'+'}  KES ${item.amount.toLocaleString()}</div>
-          <div class="tx-date">${new Date(item.date).toLocaleDateString()}</div>
+          <div class="tx-amount ${out?'color-red':'color-green'}">${out?'-':'+'} ${fmtAmt(item.amount)}</div>
+          <div class="tx-date">${fmtDate(item.date)}</div>
         </div>
-      </div>
-    `;
-  } else {
-    const creditor = item.creditor === me;
-    return `
-      <div class="tx-item">
+      </div>`;
+    } else {
+      const creditor = item.creditor === me;
+      const other = state.users.find(u => u.id === (creditor?item.debtor:item.creditor));
+      const name = other ? other.username : 'Unknown';
+      return `<div class="tx-item">
         <div class="tx-icon" style="background:var(--ambp);color:var(--amb)">↕</div>
         <div class="tx-body">
-          <div class="tx-name">${creditor?'Requested from '+item.other.username:'Request from '+item.other.username}</div>
+          <div class="tx-name">${creditor?'Requested from '+name:'Request from '+name}</div>
           <div class="tx-note">${item.note||'—'} ${item.settled?'· settled':''}</div>
         </div>
         <div class="tx-right">
-          <div class="tx-amount" style="color:var(--amb)">KES ${item.amount.toLocaleString()}</div>
-          <div class="tx-date">${new Date(item.date).toLocaleDateString()}</div>
+          <div class="tx-amount" style="color:var(--amb)">${fmtAmt(item.amount)}</div>
+          <div class="tx-date">${fmtDate(item.date)}</div>
         </div>
-      </div>
-    `;
-  }
+      </div>`;
+    }
+  }).join('');
 }
 
 // ══════════════════════════
@@ -888,10 +1463,10 @@ function openChangePin() {
 function saveNewPin() {
   if (pins.newpin.length < 4) {
     document.getElementById('newpin-err').textContent = 'Enter a full 4-digit PIN';
-    pinError('newpin');
-    return;
+    pinError('newpin'); return;
   }
   state.currentUser.pin = pins.newpin;
+  // update in users array
   const idx = state.users.findIndex(u => u.id === state.currentUser.id);
   if (idx > -1) state.users[idx].pin = pins.newpin;
   save();
@@ -911,11 +1486,11 @@ function saveEditProfile() {
   const phone = document.getElementById('edit-phone').value.trim();
   const err = document.getElementById('edit-err');
 
-  if (!username) { err.textContent = 'Username required'; return; }
+  if (!username) { err.textContent = 'Username is required'; return; }
   if (!/^[a-zA-Z0-9_]+$/.test(username)) { err.textContent = 'Letters, numbers, underscores only'; return; }
   const conflict = state.users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.id !== state.currentUser.id);
-  if (conflict) { err.textContent = 'Username taken'; return; }
-  if (!phone) { err.textContent = 'Phone required'; return; }
+  if (conflict) { err.textContent = 'Username already taken'; return; }
+  if (!phone) { err.textContent = 'Phone is required'; return; }
 
   state.currentUser.username = username;
   state.currentUser.phone = phone;
@@ -931,6 +1506,7 @@ function saveEditProfile() {
 function doLogout() {
   if (!confirm('Sign out of Pamoja?')) return;
   state.currentUser = null;
+  // reset forms
   pins.signup = ''; pins.login = '';
   updatePinDisplay('signup'); updatePinDisplay('login');
   document.getElementById('signup-username').value = '';
@@ -938,154 +1514,40 @@ function doLogout() {
   document.getElementById('login-id').value = '';
   screenStack = [];
   switchTab('login');
-  goTo('screen-home');
+  goTo('screen-signup');
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-signup').classList.add('active');
 }
 
 // ══════════════════════════
-//  AVATAR
+//  MY TOKEN
 // ══════════════════════════
-function pickAvatar() {
-  document.getElementById('avatar-input').click();
-}
-
-function loadAvatar(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    state.currentUser.avatarData = e.target.result;
-    const avatar = document.getElementById('signup-avatar');
-    avatar.innerHTML = `<img src="${e.target.result}">`;
-    save();
-  };
-  reader.readAsDataURL(file);
-}
-
-function avatarBg(id) {
-  const colors = ['#4A8C63', '#D4821A', '#185FA5', '#6B4C9A', '#C1554A'];
-  return colors[id.charCodeAt(0) % colors.length];
-}
-
-function initials(name) {
-  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-}
-
-function avatarHtml(user) {
-  if (user.avatarData) {
-    return `<div class="p-avatar" style="background-image:url('${user.avatarData}');background-size:cover"></div>`;
-  }
-  return `<div class="p-avatar" style="background:${avatarBg(user.id)};color:white">${initials(user.username)}</div>`;
-}
-
-function personCardHtml(user, type, amount) {
-  const isOwe = type === 'owe';
-  return `
-    <div class="person-card">
-      ${avatarHtml(user)}
-      <div class="p-info">
-        <div class="p-name">${user.username}</div>
-        <div class="p-sub">${user.phone}</div>
-      </div>
-      <div class="p-right">
-        <div class="p-amount ${isOwe?'amount-red':'amount-green'}">${isOwe?'+':'-'} KES ${amount.toLocaleString()}</div>
-        <div class="p-badge ${isOwe?'badge-owed':'badge-owe'}">${isOwe?'You owe':'Owed to you'}</div>
-      </div>
-    </div>
-  `;
-}
-
-// ══════════════════════════
-//  MODALS
-// ══════════════════════════
-function openModal(id) {
-  document.getElementById(id).classList.add('active');
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('active');
-}
-
-// ══════════════════════════
-//  UTILS
-// ══════════════════════════
-function toast(msg) {
-  const el = document.createElement('div');
-  el.className = 'toast';
-  el.textContent = msg;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 2000);
-}
-
 function copyToken() {
   const token = state.currentUser ? state.currentUser.token : '';
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(token).then(() => toast('Token copied!')).catch(() => toast(token));
+    navigator.clipboard.writeText(token).then(() => toast('Token copied!')).catch(()=>toast(token));
   } else {
     toast(token);
   }
 }
 
-function exportData() {
-  const data = JSON.stringify(state, null, 2);
-  const blob = new Blob([data], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `pamoja-backup-${Date.now()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  toast('Backup downloaded');
-}
-
-function importData() {
-  document.getElementById('import-input').click();
-}
-
-function loadBackup(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const backup = JSON.parse(e.target.result);
-      Object.assign(state, backup);
-      save();
-      toast('Data restored successfully');
-      location.reload();
-    } catch (err) {
-      toast('Invalid backup file');
-    }
-  };
-  reader.readAsText(file);
-}
-
-// ══════════════════════════
-//  INIT
-// ══════════════════════════
-load();
-if (state.currentUser) {
-  const stored = state.users.find(u => u.id === state.currentUser.id);
-  if (stored) {
-    state.currentUser = stored;
-    enterApp();
-  }
-}
-
-// Build initial numpads
-buildNumpad('login');
-buildNumpad('signup');
-buildNumpad('newpin');
-buildAmountNumpad();
-
-// Close modals on backdrop click
+// close modals on backdrop click
 document.querySelectorAll('.modal-backdrop').forEach(bd => {
   bd.addEventListener('click', e => {
     if (e.target === bd) bd.classList.remove('active');
   });
 });
 
-// Token input should trigger person resolution
-document.getElementById('pay-token')?.addEventListener('change', resolvePayPerson);
+// ══════════════════════════
+//  INIT
+// ══════════════════════════
+load();
+// if already logged in (e.g. refresh), restore session
+if (state.currentUser) {
+  // re-link currentUser to stored user object
+  const stored = state.users.find(u => u.id === state.currentUser.id);
+  if (stored) { state.currentUser = stored; enterApp(); }
+}
 </script>
 </body>
 </html>
