@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pamoja — Community Loans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  :root{
+    --gd:#1A3A2A;--gm:#2D5A3D;--gl:#4A8C63;--gp:#E8F5EE;
+    --sand:#F5EDD6;--sand2:#E8D9B8;--sand3:#DDD0B0;
+    --amb:#D4821A;--ambl:#F5A940;--ambp:#FFF4E0;
+    --white:#FFFFFF;--err:#B91C1C;--errp:#FEF2F2;
+    --txt:#1A3A2A;--txt2:#4A6A5A;--txt3:#8AA898;
+    --shadow: 0 10px 30px rgba(26,58,42,0.1);
+    --shadow-sm: 0 4px 12px rgba(26,58,42,0.08);
+  }
+  html,body{height:100%;background:linear-gradient(135deg, var(--sand) 0%, #f9f3eb 100%);font-family:'Inter',sans-serif;color:var(--txt);font-size:15px}
+  button{font-family:'Inter',sans-serif;cursor:pointer;border:none;outline:none}
+  input{font-family:'Inter',sans-serif;outline:none}
+  input::placeholder{color:var(--txt3)}
+  .serif{font-family:'Playfair Display',serif}
+
+  /* ── SCREENS ── */
+  .screen{display:none;flex-direction:column;min-height:100vh;max-width:420px;margin:0 auto;animation:fadeIn .4s ease}
+  .screen.active{display:flex}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ── AUTH ── */
+  .auth-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 24px 48px}
+  .auth-logo{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--gd);text-align:center;margin-bottom:8px;background:linear-gradient(135deg, var(--gd), var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .auth-sub{text-align:center;font-size:14px;color:var(--txt2);margin-bottom:40px;line-height:1.5}
+  .auth-tabs{display:flex;background:var(--white);border-radius:14px;padding:4px;margin-bottom:32px;gap:4px;box-shadow:var(--shadow-sm)}
+  .auth-tab{flex:1;padding:11px;border-radius:11px;font-size:14px;font-weight:500;background:none;border:none;color:var(--txt2);transition:all .2s;position:relative}
+  .auth-tab.active{background:linear-gradient(135deg, var(--gd), var(--gm));color:var(--white);box-shadow:0 4px 12px rgba(74,140,99,0.2)}
+  .field-group{margin-bottom:18px}
+  .field-label{font-size:13px;font-weight:600;color:var(--txt);margin-bottom:8px;display:block;letter-spacing:.02em}
+  .field-input{width:100%;padding:14px 16px;border:1.5px solid var(--sand2);border-radius:12px;font-size:15px;color:var(--txt);background:var(--white);transition:all .2s;box-shadow:0 2px 4px rgba(0,0,0,0.02)}
+  .field-input:focus{border-color:var(--gl);box-shadow:0 0 0 3px rgba(74,140,99,0.1);background:var(--white)}
+  .field-input.err{border-color:var(--err);background:var(--errp)}
+  .field-hint{font-size:12px;color:var(--txt3);margin-top:6px}
+  .avatar-pick{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+  .avatar-circle{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg, var(--gp), #d4ede5);border:2px dashed var(--gl);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex-shrink:0;transition:all .2s;box-shadow:var(--shadow-sm)}
+  .avatar-circle:active{transform:scale(0.98);box-shadow:0 2px 8px rgba(74,140,99,0.15)}
+  .avatar-circle img{width:100%;height:100%;object-fit:cover}
+  .avatar-circle span{font-size:24px;color:var(--gl);font-weight:600}
+  .avatar-hint{font-size:13px;color:var(--txt);font-weight:500}
+  .avatar-hint small{display:block;font-size:12px;color:var(--txt3);margin-top:4px;font-weight:400}
+  .pin-row{display:flex;gap:12px;justify-content:center;margin:12px 0}
+  .pin-dot{width:50px;height:58px;border:2px solid var(--sand2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;color:var(--gd);background:var(--white);transition:all .15s;box-shadow:var(--shadow-sm)}
+  .pin-dot.filled{border-color:var(--gl);background:linear-gradient(135deg, var(--gp), #d4ede5);color:var(--gd)}
+  .pin-dot.err{border-color:var(--err);background:var(--errp)}
+  .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0 0}
+  .num-btn{padding:16px;border-radius:14px;background:var(--white);border:1.5px solid var(--sand2);font-size:20px;font-weight:600;color:var(--gd);transition:all .1s;box-shadow:var(--shadow-sm)}
+  .num-btn:active{background:var(--gp);border-color:var(--gl);transform:scale(.94);box-shadow:0 2px 8px rgba(74,140,99,0.15)}
+  .num-btn.del{font-size:18px;color:var(--txt2)}
+  .num-btn.empty{background:transparent;border-color:transparent;pointer-events:none;box-shadow:none}
+  .btn-main{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg, var(--gd), var(--gm));color:var(--white);font-size:16px;font-weight:600;margin-top:24px;transition:all .2s;box-shadow:0 6px 20px rgba(74,140,99,0.2);letter-spacing:.02em}
+  .btn-main:active{transform:scale(.98);box-shadow:0 3px 10px rgba(74,140,99,0.15)}
+  .btn-main:disabled{opacity:.4;cursor:not-allowed;transform:none}
+  .err-msg{font-size:13px;color:var(--err);text-align:center;margin-top:10px;min-height:20px;font-weight:500}
+
+  /* ── TOP BAR ── */
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:60px 20px 20px;background:transparent}
+  .topbar-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gd)}
+  .topbar-back{width:40px;height:40px;border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--gd);transition:all .2s;box-shadow:var(--shadow-sm)}
+  .topbar-back:active{background:var(--gp);transform:scale(.95)}
+
+  /* ── HOME ── */
+  .balance-card{margin:16px 16px 24px;background:linear-gradient(135deg, #1A3A2A 0%, #2D5A3D 100%);border-radius:20px;padding:28px 24px;position:relative;overflow:hidden;box-shadow:0 12px 32px rgba(26,58,42,0.25)}
+  .balance-card::before{content:'';position:absolute;top:-60px;right:-60px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.08);animation:float 6s ease-in-out infinite}
+  .balance-card::after{content:'';position:absolute;bottom:-30px;left:20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.05)}
+  @keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}
+  .bal-label{font-size:12px;color:rgba(255,255,255,.65);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;position:relative;z-index:1}
+  .bal-amount{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:var(--white);line-height:1.1;position:relative;z-index:1;text-shadow:0 2px 4px rgba(0,0,0,0.1)}
+  .bal-sub{font-size:13px;color:rgba(255,255,255,.6);margin-top:6px;position:relative;z-index:1}
+  .bal-chips{display:flex;gap:10px;margin-top:18px;position:relative;z-index:1;flex-wrap:wrap}
+  .bal-chip{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;backdrop-filter:blur(10px)}
+  .chip-owe{background:rgba(213,130,26,.2);color:#FAC775;border:1px solid rgba(213,130,26,.3)}
+  .chip-owed{background:rgba(255,255,255,.15);color:#9FE1CB;border:1px solid rgba(255,255,255,.2)}
+
+  .quick-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 16px 24px}
+  .quick-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:var(--white);border-radius:18px;padding:18px 10px;border:none;transition:all .2s;box-shadow:var(--shadow-sm)}
+  .quick-btn:active{transform:scale(.96);background:#f9f7f4}
+  .q-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;transition:all .2s}
+  .qi-green{background:linear-gradient(135deg, var(--gp), #d4ede5);color:var(--gd)}
+  .qi-amber{background:linear-gradient(135deg, var(--ambp), #ffd699);color:var(--amb)}
+  .qi-blue{background:linear-gradient(135deg, #E8F0FF, #cfe0ff);color:#185FA5}
+  .q-label{font-size:12px;font-weight:600;color:var(--txt);text-align:center}
+
+  .section-bar{display:flex;justify-content:space-between;align-items:center;padding:0 20px;margin-bottom:14px}
+  .section-title{font-size:14px;font-weight:600;color:var(--txt);letter-spacing:.02em}
+  .section-link{font-size:13px;color:var(--gl);font-weight:600;background:none;border:none;transition:all .2s}
+  .section-link:active{opacity:.7}
+
+  /* ── PERSON CARDS ── */
+  .person-list{padding:0 16px 20px}
+  .person-card{background:var(--white);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;transition:all .2s;box-shadow:var(--shadow-sm)}
+  .person-card:active{background:var(--gp);transform:translateX(2px)}
+  .p-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:16px;flex-shrink:0;overflow:hidden;box-shadow:0 2px 8px rgba(74,140,99,0.15)}
+  .p-avatar img{width:100%;height:100%;object-fit:cover}
+  .p-info{flex:1;min-width:0}
+  .p-name{font-size:15px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .p-sub{font-size:12px;color:var(--txt3);margin-top:3px;font-weight:500}
+  .p-right{text-align:right;flex-shrink:0}
+  .p-amount{font-size:16px;font-weight:700}
+  .amount-red{color:#B91C1C}
+  .amount-green{color:var(--gl)}
+  .p-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;margin-top:4px}
+  .badge-owe{background:var(--errp);color:#991B1B}
+  .badge-owed{background:var(--gp);color:#27500A}
+  .empty-state{text-align:center;padding:60px 20px;color:var(--txt3);font-size:14px}
+  .empty-state .empty-icon{font-size:48px;margin-bottom:16px;opacity:.6}
+
+  /* ── PAY SCREEN ── */
+  .pay-wrap{flex:1;padding:0 20px 40px}
+  .token-box{background:var(--white);border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
+  .token-input-row{display:flex;gap:10px;align-items:center}
+  .token-input{flex:1;padding:14px 16px;border:2px solid var(--sand2);border-radius:12px;font-size:16px;letter-spacing:.1em;font-weight:600;color:var(--gd);background:linear-gradient(135deg, var(--gp), #f0fbf7);transition:all .2s;font-family:'Courier New',monospace}
+  .token-input:focus{border-color:var(--gl);box-shadow:0 0 0 3px rgba(74,140,99,0.1)}
+  .scan-btn{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg, var(--gd), var(--gm));color:var(--white);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;transition:all .2s;box-shadow:var(--shadow-sm)}
+  .scan-btn:active{transform:scale(.94)}
+  .resolved-person{display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(135deg, var(--gp), #d4ede5);border-radius:14px;margin-top:14px;border:1px solid rgba(74,140,99,0.2)}
+  .resolved-person.hidden{display:none}
+  .amount-big{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--gd);text-align:center;padding:24px 0 10px}
+  .amount-big-wrap{background:var(--white);border-radius:16px;padding:10px 20px 18px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
+  .currency-label{text-align:center;font-size:12px;color:var(--txt3);margin-bottom:6px;font-weight:600}
+  .amount-numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 4px}
+  .an-btn{padding:14px;border-radius:12px;background:var(--white);border:1.5px solid var(--sand2);font-size:18px;font-weight:600;color:var(--gd);transition:all .1s;box-shadow:var(--shadow-sm)}
+  .an-btn:active{background:var(--gp);border-color:var(--gl);transform:scale(.94)}
+  .an-btn.del{font-size:16px;color:var(--txt2)}
+  .pay-note{width:100%;padding:14px 16px;border:1.5px solid var(--sand2);border-radius:12px;font-size:14px;color:var(--txt);background:var(--white);resize:none;margin-bottom:18px;transition:all .2s;box-shadow:var(--shadow-sm)}
+  .pay-note:focus{border-color:var(--gl);box-shadow:0 0 0 3px rgba(74,140,99,0.1)}
+
+  /* ── REQUEST ── */
+  .req-wrap{flex:1;padding:0 20px 40px}
+
+  /* ── MY TOKEN ── */
+  .token-display-card{margin:20px 16px;background:linear-gradient(135deg, #1A3A2A 0%, #2D5A3D 100%);border-radius:24px;padding:36px 28px;text-align:center;box-shadow:0 12px 32px rgba(26,58,42,0.25);position:relative;overflow:hidden}
+  .token-display-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .token-display-card::after{content:'';position:absolute;bottom:-30px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.04)}
+  .token-code{font-family:'Courier New',monospace;font-size:38px;font-weight:700;color:var(--white);letter-spacing:.3em;margin:16px 0;position:relative;z-index:1;text-shadow:0 2px 4px rgba(0,0,0,0.2);word-break:break-all}
+  .token-lbl{font-size:12px;color:rgba(255,255,255,.7);letter-spacing:.1em;text-transform:uppercase;font-weight:600;position:relative;z-index:1}
+  .token-hint{font-size:13px;color:rgba(255,255,255,.7);margin-top:12px;line-height:1.6;position:relative;z-index:1}
+  .copy-btn{display:inline-flex;align-items:center;gap:7px;margin-top:18px;padding:11px 22px;border-radius:20px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.95);font-size:14px;font-weight:600;border:1px solid rgba(255,255,255,.2);transition:all .2s;backdrop-filter:blur(10px)}
+  .copy-btn:active{background:rgba(255,255,255,.25);transform:scale(.96)}
+  .qr-placeholder{width:180px;height:180px;background:var(--white);border-radius:16px;margin:24px auto 0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--txt2);font-size:13px;box-shadow:0 8px 24px rgba(26,58,42,0.15)}
+  .qr-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:12px}
+  .qr-cell{width:100%;aspect-ratio:1;border-radius:2px}
+
+  /* ── HISTORY ── */
+  .tx-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--sand2)}
+  .tx-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;flex-shrink:0;box-shadow:var(--shadow-sm)}
+  .tx-body{flex:1;min-width:0}
+  .tx-name{font-size:14px;font-weight:600;color:var(--txt)}
+  .tx-note{font-size:12px;color:var(--txt3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tx-right{text-align:right;flex-shrink:0}
+  .tx-amount{font-size:15px;font-weight:700}
+  .tx-date{font-size:11px;color:var(--txt3);margin-top:2px;font-weight:500}
+  .color-red{color:#B91C1C}
+  .color-green{color:var(--gl)}
+
+  /* ── MODALS ── */
+  .modal-backdrop{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(26,58,42,0.4);backdrop-filter:blur(4px);align-items:center;justify-content:center;z-index:100;animation:fadeIn .3s ease}
+  .modal-backdrop.active{display:flex}
+  .modal-card{background:var(--white);border-radius:24px;padding:28px;max-width:90%;box-shadow:0 20px 60px rgba(26,58,42,0.3);animation:slideUp .4s ease}
+  .modal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gd);margin-bottom:20px;text-align:center}
+  .modal-content{margin-bottom:24px}
+
+  /* ── TOAST ── */
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--gd);color:var(--white);padding:14px 24px;border-radius:20px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(26,58,42,0.3);animation:slideUp .3s ease,fadeOut .3s ease .3s forwards;z-index:1000}
+  @keyframes fadeOut{0%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(20px)}}
+
+  /* ── RESPONSIVE ── */
+  @media (max-width:480px){
+    .screen{max-width:100%}
+    .auth-logo{font-size:32px}
+    .bal-amount{font-size:36px}
+    .amount-big{font-size:42px}
+    .token-code{font-size:32px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════
+     SIGNUP SCREEN
+     ══════════════════════════ -->
+<div id="screen-signup" class="screen active">
+  <div class="auth-wrap">
+    <div class="auth-logo">Pamoja</div>
+    <div class="auth-sub">Community loans, simplified. Own your token, build trust.</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login')">Log In</button>
+      <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+    
+    <!-- LOGIN TAB -->
+    <div id="login-tab" style="display:flex;flex-direction:column">
+      <div class="field-group">
+        <label class="field-label">Your ID</label>
+        <input id="login-id" class="field-input" placeholder="e.g., 12345" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label class="field-label">PIN (4 digits)</label>
+        <div class="pin-row"><div id="login-pin-0" class="pin-dot"></div><div id="login-pin-1" class="pin-dot"></div><div id="login-pin-2" class="pin-dot"></div><div id="login-pin-3" class="pin-dot"></div></div>
+        <div class="numpad" id="login-numpad"></div>
+      </div>
+      <div class="err-msg" id="login-err"></div>
+      <button class="btn-main" onclick="doLogin()">Enter App</button>
+    </div>
+
+    <!-- SIGNUP TAB -->
+    <div id="signup-tab" style="display:none;flex-direction:column">
+      <div class="avatar-pick">
+        <div id="signup-avatar" class="avatar-circle" onclick="pickAvatar()"><span>👤</span></div>
+        <div class="avatar-hint">Tap to add photo<small>JPG or PNG (optional)</small></div>
+      </div>
+      <input type="file" id="avatar-input" style="display:none" accept="image/*" onchange="loadAvatar(this.files[0])">
+      <div class="field-group">
+        <label class="field-label">Username</label>
+        <input id="signup-username" class="field-input" placeholder="e.g., Alice" autocomplete="off">
+        <div class="field-hint">Letters, numbers, underscores only</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Phone</label>
+        <input id="signup-phone" class="field-input" placeholder="+1 234 567 8900" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Create PIN (4 digits)</label>
+        <div class="pin-row"><div id="signup-pin-0" class="pin-dot"></div><div id="signup-pin-1" class="pin-dot"></div><div id="signup-pin-2" class="pin-dot"></div><div id="signup-pin-3" class="pin-dot"></div></div>
+        <div class="numpad" id="signup-numpad"></div>
+      </div>
+      <div class="err-msg" id="signup-err"></div>
+      <button class="btn-main" onclick="doSignup()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     HOME SCREEN
+     ══════════════════════════ -->
+<div id="screen-home" class="screen">
+  <div class="topbar">
+    <div class="topbar-title">Pamoja</div>
+    <button class="topbar-back" onclick="goTo('screen-profile')">⚙️</button>
+  </div>
+  <div class="balance-card">
+    <div class="bal-label">Balance</div>
+    <div class="bal-amount" id="home-balance">KES 0</div>
+    <div class="bal-sub" id="home-net">You owe KES 0</div>
+    <div class="bal-chips">
+      <div class="bal-chip chip-owe"><span id="home-owe-count">0</span> owed to you</div>
+      <div class="bal-chip chip-owed"><span id="home-owed-count">0</span> you owe</div>
+    </div>
+  </div>
+  <div class="quick-row">
+    <button class="quick-btn" onclick="goTo('screen-pay')"><div class="q-icon qi-green">💳</div><div class="q-label">Pay</div></button>
+    <button class="quick-btn" onclick="goTo('screen-request')"><div class="q-icon qi-amber">📤</div><div class="q-label">Request</div></button>
+    <button class="quick-btn" onclick="goTo('screen-mytoken')"><div class="q-icon qi-blue">🔐</div><div class="q-label">My Token</div></button>
+  </div>
+  <div class="section-bar">
+    <div class="section-title">Recent Activity</div>
+    <button class="section-link" onclick="goTo('screen-history')">View All</button>
+  </div>
+  <div id="home-recent" class="person-list"></div>
+</div>
+
+<!-- ══════════════════════════
+     PAY SCREEN
+     ══════════════════════════ -->
+<div id="screen-pay" class="screen">
+  <div class="topbar"><div class="topbar-title">Send Payment</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
+  <div class="pay-wrap">
+    <div class="token-box">
+      <div style="font-size:13px;color:var(--txt3);font-weight:600;margin-bottom:10px">Recipient's Token</div>
+      <div class="token-input-row">
+        <input id="pay-token" class="token-input" placeholder="ABC123DEF456" autocomplete="off">
+        <button class="scan-btn" onclick="scanToken()">📱</button>
+      </div>
+    </div>
+    <div class="resolved-person hidden" id="pay-person">
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600;color:var(--txt)">Paying</div>
+        <div id="pay-person-name" style="font-size:13px;color:var(--txt2);margin-top:2px"></div>
+      </div>
+      <button style="background:transparent;color:var(--err);font-weight:600;font-size:13px" onclick="clearPayPerson()">Clear</button>
+    </div>
+    <div class="amount-big-wrap">
+      <div class="currency-label">Amount (KES)</div>
+      <div class="amount-big" id="pay-amount">0</div>
+      <div class="amount-numpad" id="pay-numpad"></div>
+    </div>
+    <div>
+      <label class="field-label" style="padding:0 0 8px">Note (optional)</label>
+      <textarea id="pay-note" class="pay-note" placeholder="What's this for?" rows="2"></textarea>
+    </div>
+    <div class="err-msg" id="pay-err"></div>
+    <button class="btn-main" onclick="doPay()">Confirm Payment</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     REQUEST SCREEN
+     ══════════════════════════ -->
+<div id="screen-request" class="screen">
+  <div class="topbar"><div class="topbar-title">Request Payment</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
+  <div class="req-wrap">
+    <div class="section-bar" style="padding:0;margin-bottom:20px"><div class="section-title">Friends & Contacts</div></div>
+    <div id="request-list" class="person-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     MY TOKEN SCREEN
+     ══════════════════════════ -->
+<div id="screen-mytoken" class="screen">
+  <div class="topbar"><div class="topbar-title">Your Token</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
+  <div class="token-display-card">
+    <div class="token-lbl">Your Unique Token</div>
+    <div class="token-code" id="token-display">ABC123DEF456</div>
+    <div class="token-hint">Share this token to receive payments. It never changes.</div>
+    <button class="copy-btn" onclick="copyToken()">📋 Copy</button>
+    <div class="qr-placeholder" id="qr-placeholder">QR Code<small>(feature coming soon)</small></div>
+  </div>
+  <div style="padding:20px;text-align:center;color:var(--txt3);font-size:13px">
+    <p>💡 Your token is permanent and secure. Only you can use it to receive payments.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     HISTORY SCREEN
+     ══════════════════════════ -->
+<div id="screen-history" class="screen">
+  <div class="topbar"><div class="topbar-title">Activity</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
+  <div style="padding:0 16px;flex:1;overflow-y:auto">
+    <div id="history-list" class="person-list" style="padding:0;border-top:1px solid var(--sand2)"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     PROFILE SCREEN
+     ══════════════════════════ -->
+<div id="screen-profile" class="screen">
+  <div class="topbar"><div class="topbar-title">Profile</div><button class="topbar-back" onclick="goTo('screen-home')">←</button></div>
+  <div style="padding:20px;flex:1;overflow-y:auto">
+    <div class="avatar-pick" style="margin-bottom:24px">
+      <div id="profile-avatar-display" class="avatar-circle" style="width:80px;height:80px;font-size:32px"></div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--txt)" id="profile-name-display">Name</div>
+        <div style="font-size:13px;color:var(--txt3);margin-top:4px" id="profile-phone-display">Phone</div>
+        <button style="background:none;color:var(--gl);font-weight:600;font-size:13px;margin-top:8px;cursor:pointer" onclick="openEditProfile()">Edit</button>
+      </div>
+    </div>
+    <div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm)">
+      <div style="font-size:12px;color:var(--txt3);font-weight:600;margin-bottom:8px">Your Token</div>
+      <div style="font-family:'Courier New',monospace;font-size:14px;font-weight:600;color:var(--gd);word-break:break-all" id="profile-token-display">ABC123DEF456</div>
+      <button style="background:none;color:var(--gl);font-weight:600;font-size:13px;margin-top:12px;cursor:pointer" onclick="copyToken()">📋 Copy Token</button>
+    </div>
+    <div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm)">
+      <button style="width:100%;background:none;color:var(--gd);font-weight:600;font-size:14px;padding:12px;cursor:pointer" onclick="openChangePin()">🔐 Change PIN</button>
+    </div>
+    <div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm)">
+      <button style="width:100%;background:none;color:var(--gd);font-weight:600;font-size:14px;padding:12px;cursor:pointer" onclick="exportData()">💾 Backup Data</button>
+      <button style="width:100%;background:none;color:var(--gd);font-weight:600;font-size:14px;padding:12px;margin-top:8px;cursor:pointer" onclick="importData()">📂 Restore Data</button>
+      <input type="file" id="import-input" style="display:none" accept="application/json" onchange="loadBackup(this.files[0])">
+    </div>
+    <div style="background:var(--errp);border-radius:16px;padding:16px">
+      <button style="width:100%;background:none;color:var(--err);font-weight:600;font-size:14px;padding:12px;cursor:pointer" onclick="doLogout()">🚪 Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     MODALS
+     ══════════════════════════ -->
+<div id="modal-pin" class="modal-backdrop" onclick="if(event.target===this)closeModal('modal-pin')">
+  <div class="modal-card">
+    <div class="modal-title">Change PIN</div>
+    <div class="modal-content">
+      <div class="pin-row"><div id="newpin-pin-0" class="pin-dot"></div><div id="newpin-pin-1" class="pin-dot"></div><div id="newpin-pin-2" class="pin-dot"></div><div id="newpin-pin-3" class="pin-dot"></div></div>
+      <div class="numpad" id="newpin-numpad"></div>
+    </div>
+    <div class="err-msg" id="newpin-err"></div>
+    <button class="btn-main" onclick="saveNewPin()">Save PIN</button>
+  </div>
+</div>
+
+<div id="modal-edit" class="modal-backdrop" onclick="if(event.target===this)closeModal('modal-edit')">
+  <div class="modal-card">
+    <div class="modal-title">Edit Profile</div>
+    <div class="modal-content">
+      <div class="field-group">
+        <label class="field-label">Username</label>
+        <input id="edit-username" class="field-input" placeholder="Username">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Phone</label>
+        <input id="edit-phone" class="field-input" placeholder="Phone">
+      </div>
+    </div>
+    <div class="err-msg" id="edit-err"></div>
+    <button class="btn-main" onclick="saveEditProfile()">Save Changes</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════
+//  STATE & STORAGE
+// ══════════════════════════
+const state = {
+  users: [],
+  currentUser: null,
+  transactions: [],
+  requests: []
+};
+
+const pins = { login: '', signup: '', newpin: '' };
+let screenStack = [];
+
+// PERSISTENT STORAGE WITH TOKEN PRESERVATION
+function save() {
+  const backup = state.currentUser?.token;
+  localStorage.setItem('pamoja-state', JSON.stringify(state));
+  if (backup && state.currentUser) state.currentUser.token = backup;
+}
+
+function load() {
+  const data = localStorage.getItem('pamoja-state');
+  if (data) {
+    const loaded = JSON.parse(data);
+    state.users = loaded.users || [];
+    state.transactions = loaded.transactions || [];
+    state.requests = loaded.requests || [];
+    if (loaded.currentUser) {
+      const user = state.users.find(u => u.id === loaded.currentUser.id);
+      if (user) state.currentUser = user;
+    }
+  }
+}
+
+function genToken() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let token = '';
+  for (let i = 0; i < 12; i++) token += chars.charAt(Math.floor(Math.random() * chars.length));
+  return token;
+}
+
+// ══════════════════════════
+//  AUTH
+// ══════════════════════════
+function switchTab(tab) {
+  const loginTab = document.getElementById('login-tab');
+  const signupTab = document.getElementById('signup-tab');
+  const tabs = document.querySelectorAll('.auth-tab');
+  
+  if (tab === 'login') {
+    loginTab.style.display = 'flex';
+    signupTab.style.display = 'none';
+    tabs[0].classList.add('active');
+    tabs[1].classList.remove('active');
+  } else {
+    loginTab.style.display = 'none';
+    signupTab.style.display = 'flex';
+    tabs[0].classList.remove('active');
+    tabs[1].classList.add('active');
+  }
+}
+
+function buildNumpad(pinKey) {
+  const container = document.getElementById(pinKey + '-numpad');
+  container.innerHTML = '';
+  for (let i = 1; i <= 9; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'num-btn';
+    btn.textContent = i;
+    btn.onclick = () => addPin(pinKey, i);
+    container.appendChild(btn);
+  }
+  container.appendChild(Object.assign(document.createElement('button'), {
+    className: 'num-btn empty',
+    innerHTML: '&nbsp;'
+  }));
+  const delBtn = document.createElement('button');
+  delBtn.className = 'num-btn del';
+  delBtn.textContent = '⌫';
+  delBtn.onclick = () => removePin(pinKey);
+  container.appendChild(delBtn);
+}
+
+function addPin(key, num) {
+  if (pins[key].length < 4) {
+    pins[key] += num;
+    updatePinDisplay(key);
+  }
+}
+
+function removePin(key) {
+  pins[key] = pins[key].slice(0, -1);
+  updatePinDisplay(key);
+}
+
+function updatePinDisplay(key) {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById(key + '-pin-' + i);
+    if (i < pins[key].length) {
+      dot.classList.add('filled');
+      dot.textContent = pins[key][i];
+    } else {
+      dot.classList.remove('filled', 'err');
+      dot.textContent = '';
+    }
+  }
+}
+
+function pinError(key) {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById(key + '-pin-' + i).classList.add('err');
+  }
+  setTimeout(() => {
+    pins[key] = '';
+    updatePinDisplay(key);
+  }, 800);
+}
+
+function doSignup() {
+  const username = document.getElementById('signup-username').value.trim();
+  const phone = document.getElementById('signup-phone').value.trim();
+  const err = document.getElementById('signup-err');
+  err.textContent = '';
+
+  if (!username) { err.textContent = 'Username required'; return; }
+  if (!/^[a-zA-Z0-9_]+$/.test(username)) { err.textContent = 'Letters, numbers, underscores only'; return; }
+  if (state.users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+    err.textContent = 'Username taken'; return;
+  }
+  if (!phone) { err.textContent = 'Phone required'; return; }
+  if (pins.signup.length < 4) { err.textContent = 'Enter 4-digit PIN'; pinError('signup'); return; }
+
+  const newUser = {
+    id: Math.random().toString(36).substr(2, 9),
+    username,
+    phone,
+    pin: pins.signup,
+    token: genToken(),
+    avatarData: null,
+    createdAt: new Date().toISOString()
+  };
+
+  state.users.push(newUser);
+  state.currentUser = newUser;
+  save();
+  enterApp();
+  toast('Welcome, ' + username + '!');
+}
+
+function doLogin() {
+  const id = document.getElementById('login-id').value.trim();
+  const err = document.getElementById('login-err');
+  err.textContent = '';
+
+  const user = state.users.find(u => u.id === id);
+  if (!user) { err.textContent = 'ID not found'; return; }
+  if (pins.login !== user.pin) {
+    err.textContent = 'Wrong PIN';
+    pinError('login');
+    return;
+  }
+
+  state.currentUser = user;
+  save();
+  enterApp();
+  toast('Welcome back, ' + user.username + '!');
+}
+
+function enterApp() {
+  buildNumpad('pay');
+  buildNumpad('amount');
+  goTo('screen-home');
+  renderHomeScreen();
+  renderProfileScreen();
+  document.getElementById('token-display').textContent = state.currentUser.token;
+  document.getElementById('profile-token-display').textContent = state.currentUser.token;
+}
+
+// ══════════════════════════
+//  NAVIGATION
+// ══════════════════════════
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  screenStack.push(screenId);
+
+  if (screenId === 'screen-home') renderHomeScreen();
+  else if (screenId === 'screen-pay') { document.getElementById('pay-token').value = ''; document.getElementById('pay-amount').textContent = '0'; clearPayPerson(); }
+  else if (screenId === 'screen-request') renderRequestScreen();
+  else if (screenId === 'screen-history') renderHistoryScreen();
+}
+
+// ══════════════════════════
+//  HOME SCREEN
+// ══════════════════════════
+function renderHomeScreen() {
+  const me = state.currentUser.id;
+  let owe = 0, owed = 0;
+
+  state.transactions.forEach(tx => {
+    if (tx.from === me) owe += tx.amount;
+    if (tx.to === me) owed += tx.amount;
+  });
+
+  state.requests.forEach(req => {
+    if (req.creditor === me) owed += req.amount;
+    if (req.debtor === me) owe += req.amount;
+  });
+
+  const net = owed - owe;
+  document.getElementById('home-balance').textContent = 'KES ' + (net >= 0 ? '+' : '') + net.toLocaleString();
+  document.getElementById('home-net').textContent = (net > 0 ? 'Net credit: KES ' + net.toLocaleString() : net < 0 ? 'You owe: KES ' + Math.abs(net).toLocaleString() : 'Settled up');
+  document.getElementById('home-owe-count').textContent = countDebtors(me);
+  document.getElementById('home-owed-count').textContent = countCreditors(me);
+
+  const recent = [];
+  state.transactions.slice(-3).reverse().forEach(tx => {
+    const other = state.users.find(u => u.id === (tx.from === me ? tx.to : tx.from));
+    if (other) recent.push({ ...tx, other });
+  });
+
+  document.getElementById('home-recent').innerHTML = recent.length > 0
+    ? recent.map(tx => personCardHtml(tx.other, tx.from === me ? 'pay' : 'owe', tx.amount)).join('')
+    : '<div class="empty-state"><div class="empty-icon">💬</div>No transactions yet. Start by sending or requesting a payment!</div>';
+}
+
+function countDebtors(me) {
+  const debtors = new Set();
+  state.transactions.forEach(tx => {
+    if (tx.to === me && tx.from) debtors.add(tx.from);
+  });
+  state.requests.forEach(req => {
+    if (req.creditor === me && req.debtor) debtors.add(req.debtor);
+  });
+  return debtors.size;
+}
+
+function countCreditors(me) {
+  const creditors = new Set();
+  state.transactions.forEach(tx => {
+    if (tx.from === me && tx.to) creditors.add(tx.to);
+  });
+  state.requests.forEach(req => {
+    if (req.debtor === me && req.creditor) creditors.add(req.creditor);
+  });
+  return creditors.size;
+}
+
+// ══════════════════════════
+//  PAY SCREEN
+// ══════════════════════════
+let payAmount = 0;
+
+function buildAmountNumpad() {
+  const container = document.getElementById('amount-numpad');
+  container.innerHTML = '';
+  for (let i = 1; i <= 9; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'an-btn';
+    btn.textContent = i;
+    btn.onclick = () => addAmount(i);
+    container.appendChild(btn);
+  }
+  container.appendChild(Object.assign(document.createElement('button'), {
+    className: 'an-btn empty',
+    innerHTML: '&nbsp;'
+  }));
+  const delBtn = document.createElement('button');
+  delBtn.className = 'an-btn del';
+  delBtn.textContent = '⌫';
+  delBtn.onclick = () => removeAmount();
+  container.appendChild(delBtn);
+}
+
+function addAmount(num) {
+  payAmount = (payAmount * 10 + num);
+  if (payAmount > 9999999) payAmount = 9999999;
+  updateAmount();
+}
+
+function removeAmount() {
+  payAmount = Math.floor(payAmount / 10);
+  updateAmount();
+}
+
+function updateAmount() {
+  document.getElementById('pay-amount').textContent = payAmount.toLocaleString();
+}
+
+function scanToken() {
+  const token = prompt('Enter recipient token:');
+  if (token) {
+    document.getElementById('pay-token').value = token.toUpperCase();
+    resolvePayPerson();
+  }
+}
+
+function resolvePayPerson() {
+  const token = document.getElementById('pay-token').value.toUpperCase();
+  const user = state.users.find(u => u.token === token);
+  const personEl = document.getElementById('pay-person');
+  
+  if (user && user.id !== state.currentUser.id) {
+    document.getElementById('pay-person-name').textContent = user.username;
+    personEl.classList.remove('hidden');
+  } else {
+    clearPayPerson();
+  }
+}
+
+function clearPayPerson() {
+  document.getElementById('pay-person').classList.add('hidden');
+  document.getElementById('pay-token').value = '';
+}
+
+function doPay() {
+  const token = document.getElementById('pay-token').value.toUpperCase();
+  const note = document.getElementById('pay-note').value;
+  const err = document.getElementById('pay-err');
+  err.textContent = '';
+
+  if (!token) { err.textContent = 'Enter recipient token'; return; }
+  const recipient = state.users.find(u => u.token === token);
+  if (!recipient) { err.textContent = 'Token not found'; return; }
+  if (recipient.id === state.currentUser.id) { err.textContent = 'Cannot pay yourself'; return; }
+  if (payAmount <= 0) { err.textContent = 'Enter amount'; return; }
+
+  state.transactions.push({
+    id: Math.random().toString(36).substr(2, 9),
+    from: state.currentUser.id,
+    to: recipient.id,
+    amount: payAmount,
+    note,
+    date: new Date().toISOString()
+  });
+
+  save();
+  payAmount = 0;
+  updateAmount();
+  document.getElementById('pay-note').value = '';
+  document.getElementById('pay-token').value = '';
+  clearPayPerson();
+  toast('Payment sent to ' + recipient.username);
+  renderHomeScreen();
+  goTo('screen-home');
+}
+
+// ══════════════════════════
+//  REQUEST SCREEN
+// ══════════════════════════
+function renderRequestScreen() {
+  const html = state.users
+    .filter(u => u.id !== state.currentUser.id)
+    .map(u => `
+      <div class="person-card" onclick="openRequestModal('${u.id}')">
+        ${avatarHtml(u)}
+        <div class="p-info">
+          <div class="p-name">${u.username}</div>
+          <div class="p-sub">${u.phone}</div>
+        </div>
+        <div style="font-size:18px">→</div>
+      </div>
+    `).join('');
+  document.getElementById('request-list').innerHTML = html || '<div class="empty-state">No contacts yet</div>';
+}
+
+function openRequestModal(userId) {
+  const user = state.users.find(u => u.id === userId);
+  const amount = prompt('Request amount (KES):');
+  if (!amount || isNaN(amount)) return;
+
+  const note = prompt('Note:', '');
+
+  state.requests.push({
+    id: Math.random().toString(36).substr(2, 9),
+    creditor: state.currentUser.id,
+    debtor: userId,
+    amount: parseFloat(amount),
+    note: note || '',
+    settled: false,
+    date: new Date().toISOString()
+  });
+
+  save();
+  toast('Request sent to ' + user.username);
+  renderHomeScreen();
+  goTo('screen-home');
+}
+
+// ══════════════════════════
+//  HISTORY SCREEN
+// ══════════════════════════
+function renderHistoryScreen() {
+  const me = state.currentUser.id;
+  const items = [];
+
+  state.transactions.forEach(tx => {
+    if (tx.from === me || tx.to === me) {
+      const other = state.users.find(u => u.id === (tx.from === me ? tx.to : tx.from));
+      if (other) items.push({ type: 'pay', ...tx, other });
+    }
+  });
+
+  state.requests.forEach(req => {
+    if (req.creditor === me || req.debtor === me) {
+      const other = state.users.find(u => u.id === (req.creditor === me ? req.debtor : req.creditor));
+      if (other) items.push({ type: 'req', ...req, other });
+    }
+  });
+
+  items.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  document.getElementById('history-list').innerHTML = items.length > 0
+    ? items.map(item => historyItemHtml(item)).join('')
+    : '<div class="empty-state" style="padding:60px 20px">No activity yet</div>';
+}
+
+function historyItemHtml(item) {
+  const me = state.currentUser.id;
+  if (item.type === 'pay') {
+    const out = item.from === me;
+    return `
+      <div class="tx-item">
+        <div class="tx-icon" style="background:${out?'#FFF4E0':'var(--gp)'};color:${out?'var(--amb)':'var(--gl)'}">💳</div>
+        <div class="tx-body">
+          <div class="tx-name">${out?'Paid '+item.other.username:item.other.username+' paid you'}</div>
+          <div class="tx-note">${item.note||'—'}</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount ${out?'color-red':'color-green'}">${out?'-':'+'}  KES ${item.amount.toLocaleString()}</div>
+          <div class="tx-date">${new Date(item.date).toLocaleDateString()}</div>
+        </div>
+      </div>
+    `;
+  } else {
+    const creditor = item.creditor === me;
+    return `
+      <div class="tx-item">
+        <div class="tx-icon" style="background:var(--ambp);color:var(--amb)">↕</div>
+        <div class="tx-body">
+          <div class="tx-name">${creditor?'Requested from '+item.other.username:'Request from '+item.other.username}</div>
+          <div class="tx-note">${item.note||'—'} ${item.settled?'· settled':''}</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount" style="color:var(--amb)">KES ${item.amount.toLocaleString()}</div>
+          <div class="tx-date">${new Date(item.date).toLocaleDateString()}</div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+// ══════════════════════════
+//  PROFILE
+// ══════════════════════════
+function renderProfileScreen() {
+  const u = state.currentUser;
+  const el = document.getElementById('profile-avatar-display');
+  if (u.avatarData) {
+    el.innerHTML = `<img src="${u.avatarData}" style="width:100%;height:100%;object-fit:cover">`;
+  } else {
+    el.style.background = avatarBg(u.id);
+    el.style.color = 'white';
+    el.textContent = initials(u.username);
+  }
+  document.getElementById('profile-name-display').textContent = u.username;
+  document.getElementById('profile-phone-display').textContent = u.phone;
+  document.getElementById('profile-token-display').textContent = u.token;
+}
+
+function openChangePin() {
+  pins.newpin = '';
+  updatePinDisplay('newpin');
+  document.getElementById('newpin-err').textContent = '';
+  openModal('modal-pin');
+}
+
+function saveNewPin() {
+  if (pins.newpin.length < 4) {
+    document.getElementById('newpin-err').textContent = 'Enter a full 4-digit PIN';
+    pinError('newpin');
+    return;
+  }
+  state.currentUser.pin = pins.newpin;
+  const idx = state.users.findIndex(u => u.id === state.currentUser.id);
+  if (idx > -1) state.users[idx].pin = pins.newpin;
+  save();
+  closeModal('modal-pin');
+  toast('PIN updated');
+}
+
+function openEditProfile() {
+  document.getElementById('edit-username').value = state.currentUser.username;
+  document.getElementById('edit-phone').value = state.currentUser.phone;
+  document.getElementById('edit-err').textContent = '';
+  openModal('modal-edit');
+}
+
+function saveEditProfile() {
+  const username = document.getElementById('edit-username').value.trim();
+  const phone = document.getElementById('edit-phone').value.trim();
+  const err = document.getElementById('edit-err');
+
+  if (!username) { err.textContent = 'Username required'; return; }
+  if (!/^[a-zA-Z0-9_]+$/.test(username)) { err.textContent = 'Letters, numbers, underscores only'; return; }
+  const conflict = state.users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.id !== state.currentUser.id);
+  if (conflict) { err.textContent = 'Username taken'; return; }
+  if (!phone) { err.textContent = 'Phone required'; return; }
+
+  state.currentUser.username = username;
+  state.currentUser.phone = phone;
+  const idx = state.users.findIndex(u => u.id === state.currentUser.id);
+  if (idx > -1) { state.users[idx].username = username; state.users[idx].phone = phone; }
+  save();
+  closeModal('modal-edit');
+  renderProfileScreen();
+  renderHomeScreen();
+  toast('Profile updated');
+}
+
+function doLogout() {
+  if (!confirm('Sign out of Pamoja?')) return;
+  state.currentUser = null;
+  pins.signup = ''; pins.login = '';
+  updatePinDisplay('signup'); updatePinDisplay('login');
+  document.getElementById('signup-username').value = '';
+  document.getElementById('signup-phone').value = '';
+  document.getElementById('login-id').value = '';
+  screenStack = [];
+  switchTab('login');
+  goTo('screen-home');
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-signup').classList.add('active');
+}
+
+// ══════════════════════════
+//  AVATAR
+// ══════════════════════════
+function pickAvatar() {
+  document.getElementById('avatar-input').click();
+}
+
+function loadAvatar(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    state.currentUser.avatarData = e.target.result;
+    const avatar = document.getElementById('signup-avatar');
+    avatar.innerHTML = `<img src="${e.target.result}">`;
+    save();
+  };
+  reader.readAsDataURL(file);
+}
+
+function avatarBg(id) {
+  const colors = ['#4A8C63', '#D4821A', '#185FA5', '#6B4C9A', '#C1554A'];
+  return colors[id.charCodeAt(0) % colors.length];
+}
+
+function initials(name) {
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function avatarHtml(user) {
+  if (user.avatarData) {
+    return `<div class="p-avatar" style="background-image:url('${user.avatarData}');background-size:cover"></div>`;
+  }
+  return `<div class="p-avatar" style="background:${avatarBg(user.id)};color:white">${initials(user.username)}</div>`;
+}
+
+function personCardHtml(user, type, amount) {
+  const isOwe = type === 'owe';
+  return `
+    <div class="person-card">
+      ${avatarHtml(user)}
+      <div class="p-info">
+        <div class="p-name">${user.username}</div>
+        <div class="p-sub">${user.phone}</div>
+      </div>
+      <div class="p-right">
+        <div class="p-amount ${isOwe?'amount-red':'amount-green'}">${isOwe?'+':'-'} KES ${amount.toLocaleString()}</div>
+        <div class="p-badge ${isOwe?'badge-owed':'badge-owe'}">${isOwe?'You owe':'Owed to you'}</div>
+      </div>
+    </div>
+  `;
+}
+
+// ══════════════════════════
+//  MODALS
+// ══════════════════════════
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+// ══════════════════════════
+//  UTILS
+// ══════════════════════════
+function toast(msg) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2000);
+}
+
+function copyToken() {
+  const token = state.currentUser ? state.currentUser.token : '';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(token).then(() => toast('Token copied!')).catch(() => toast(token));
+  } else {
+    toast(token);
+  }
+}
+
+function exportData() {
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `pamoja-backup-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Backup downloaded');
+}
+
+function importData() {
+  document.getElementById('import-input').click();
+}
+
+function loadBackup(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const backup = JSON.parse(e.target.result);
+      Object.assign(state, backup);
+      save();
+      toast('Data restored successfully');
+      location.reload();
+    } catch (err) {
+      toast('Invalid backup file');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ══════════════════════════
+//  INIT
+// ══════════════════════════
+load();
+if (state.currentUser) {
+  const stored = state.users.find(u => u.id === state.currentUser.id);
+  if (stored) {
+    state.currentUser = stored;
+    enterApp();
+  }
+}
+
+// Build initial numpads
+buildNumpad('login');
+buildNumpad('signup');
+buildNumpad('newpin');
+buildAmountNumpad();
+
+// Close modals on backdrop click
+document.querySelectorAll('.modal-backdrop').forEach(bd => {
+  bd.addEventListener('click', e => {
+    if (e.target === bd) bd.classList.remove('active');
+  });
+});
+
+// Token input should trigger person resolution
+document.getElementById('pay-token')?.addEventListener('change', resolvePayPerson);
+</script>
+</body>
+</html>
